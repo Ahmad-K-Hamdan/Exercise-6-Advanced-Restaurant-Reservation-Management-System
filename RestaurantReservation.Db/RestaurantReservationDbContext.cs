@@ -43,6 +43,12 @@ namespace RestaurantReservation.Db
             // The primary key in MenuItem model does not follow EF rules
             // so it has to be defined manually
             modelBuilder.Entity<MenuItem>().HasKey(menuItem => menuItem.ItemId);
+            // Follow: change the FK in OrderItems to be the correct one
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.MenuItem)
+                .WithMany(mi => mi.OrderItems)
+                .HasForeignKey(oi => oi.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Orders deleted when Reservation is deleted
             modelBuilder.Entity<Order>()
