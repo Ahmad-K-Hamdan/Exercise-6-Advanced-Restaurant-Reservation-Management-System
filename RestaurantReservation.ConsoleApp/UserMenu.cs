@@ -54,7 +54,7 @@ namespace RestaurantReservation.ConsoleApp
                         ViewDataMenu();
                         break;
                     case "2":
-                        //AddDataMenu();
+                        AddDataMenu();
                         break;
                     case "3":
                         //ManageDataMenu();
@@ -117,6 +117,56 @@ namespace RestaurantReservation.ConsoleApp
                     _customerService.ViewAll();
                     break;
                 case "9":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Press any key to try again.");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void AddDataMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to add?");
+            Console.WriteLine("1. Restaurant");
+            Console.WriteLine("2. Employee");
+            Console.WriteLine("3. Table");
+            Console.WriteLine("4. Customer");
+            Console.WriteLine("5. Menu Item");
+            Console.WriteLine("6. Reservation");
+            Console.WriteLine("7. Order");
+            Console.WriteLine("8. Back to Main Menu");
+            Console.Write("Select an option: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    _restaurantService.Add();
+                    break;
+                case "2":
+                    //_employeeService.Add();
+                    break;
+                case "3":
+                    //_tableService.Add();
+                    Console.ReadKey();
+                    break;
+                case "4":
+                    //_customerService.Add();
+                    break;
+                case "5":
+                    //_menuItemService.Add();
+                    Console.ReadKey();
+                    break;
+                case "6":
+                    //_reservationService.Add();
+                    Console.ReadKey();
+                    break;
+                case "7":
+                    //_orderService.Add();
+                    Console.ReadKey();
+                    break;
+                case "8":
                     return;
                 default:
                     Console.WriteLine("Invalid choice. Press any key to try again.");

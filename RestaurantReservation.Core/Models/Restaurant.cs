@@ -2,11 +2,11 @@
 {
     public class Restaurant
     {
-        public int RestaurantId;
-        public required string Name;
-        public required string Address;
-        public required string PhoneNumber;
-        public required TimeSpan OpeningHours;
+        public int RestaurantId { get; set; }
+        public required string Name { get; set; }
+        public required string Address { get; set; }
+        public required string PhoneNumber { get; set; }
+        public required TimeSpan OpeningHours { get; set; }
 
         public List<Table> Tables { get; set; } = new List<Table>();
         public List<Employee> Employees { get; set; } = new List<Employee>();

@@ -26,17 +26,6 @@ namespace RestaurantReservation.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            // An issue occurs with Restaurant model in which it can't define 
-            // the primary key on it's own
-            modelBuilder.Entity<Restaurant>(entity =>
-            {
-                entity.HasKey(r => r.RestaurantId);
-                entity.Property(r => r.Name).IsRequired();
-                entity.Property(r => r.Address).IsRequired();
-                entity.Property(r => r.PhoneNumber).IsRequired();
-                entity.Property(r => r.OpeningHours).IsRequired();
-            });
-
             // The primary key in MenuItem model does not follow EF rules
             // so it has to be defined manually
             modelBuilder.Entity<MenuItem>().HasKey(menuItem => menuItem.ItemId);
