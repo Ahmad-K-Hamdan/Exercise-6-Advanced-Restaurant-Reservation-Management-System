@@ -1,4 +1,4 @@
-﻿namespace RestaurantReservation.Db.Models
+﻿namespace RestaurantReservation.Core.Models
 {
     public class Order
     {

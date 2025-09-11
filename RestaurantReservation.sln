@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantReservation.ConsoleApp", "RestaurantReservation\RestaurantReservation.ConsoleApp.csproj", "{0876D0E3-E104-4B3F-A71A-AF0236DA6DF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantReservation.ConsoleApp", "RestaurantReservation.ConsoleApp\RestaurantReservation.ConsoleApp.csproj", "{0876D0E3-E104-4B3F-A71A-AF0236DA6DF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantReservation.Db", "RestaurantReservation.Db\RestaurantReservation.Db.csproj", "{1710FAEA-0B3F-4A07-9EBC-DD5CC15AC84A}"
 EndProject

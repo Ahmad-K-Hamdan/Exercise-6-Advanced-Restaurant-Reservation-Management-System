@@ -1,8 +1,10 @@
-﻿namespace RestaurantReservation
+﻿using RestaurantReservation.Services;
+
+namespace RestaurantReservation.ConsoleApp
 {
     public class UserMenu
     {
-        public static void ShowMainMenu()
+        public static void ShowMainMenu(RestaurantService restaurantService)
         {
             while (true)
             {
@@ -12,28 +14,28 @@
                 Console.WriteLine("2. Add Data");
                 Console.WriteLine("3. Manage Data");
                 Console.WriteLine("4. Delete Data");
-                Console.WriteLine("6. Second Menu");
-                Console.WriteLine("7. Exit");
+                Console.WriteLine("5. Second Menu");
+                Console.WriteLine("6. Exit");
                 Console.Write("Select an option: ");
                 var choice = Console.ReadLine();
                 switch (choice)
                 {
                     case "1":
-                        ViewDataMenu();
+                        ViewDataMenu(restaurantService);
                         break;
                     case "2":
-                        AddDataMenu();
+                        //AddDataMenu();
                         break;
                     case "3":
-                        ManageDataMenu();
+                        //ManageDataMenu();
                         break;
                     case "4":
-                        DeleteDataMenu();
+                        //DeleteDataMenu();
+                        break;
+                    case "5":
+                        //SecondMenu();
                         break;
                     case "6":
-                        SecondMenu();
-                        break;
-                    case "7":
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Press any key to try again.");
@@ -43,7 +45,7 @@
             }
         }
 
-        private static void ViewDataMenu()
+        private static void ViewDataMenu(RestaurantService restaurantService)
         {
             Console.Clear();
             Console.WriteLine("Which data would you like to view?");
@@ -61,6 +63,7 @@
             switch (choice)
             {
                 case "1":
+                    restaurantService.ViewAll();
                     break;
                 case "2":
                     break;

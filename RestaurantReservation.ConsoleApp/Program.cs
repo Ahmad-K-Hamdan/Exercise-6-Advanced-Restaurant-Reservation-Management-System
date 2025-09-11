@@ -1,15 +1,22 @@
 ﻿using RestaurantReservation.Db;
+using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services;
 
-namespace RestaurantReservation
+namespace RestaurantReservation.ConsoleApp
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             // Ensure database is created and connection is established
             InitializeDatabase();
 
-            UserMenu.ShowMainMenu();
+            // Initialize services and repositories
+            using var context = new RestaurantReservationDbContext();
+            var restaurantRepo = new RestaurantRepository(context);
+            var restaurantService = new RestaurantService(restaurantRepo);
+
+            UserMenu.ShowMainMenu(restaurantService);
         }
 
         private static void InitializeDatabase()
