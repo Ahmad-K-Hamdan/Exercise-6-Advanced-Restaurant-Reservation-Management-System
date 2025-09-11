@@ -13,7 +13,6 @@ namespace RestaurantReservation.ConsoleApp
         private readonly OrderItemService _orderItemService;
         private readonly CustomerService _customerService;
 
-        // Constructor injection - DI container will handle this automatically
         public UserMenu(
             RestaurantService restaurantService,
             EmployeeService employeeService,
@@ -145,26 +144,22 @@ namespace RestaurantReservation.ConsoleApp
                     _restaurantService.Add();
                     break;
                 case "2":
-                    //_employeeService.Add();
+                    // _employeeService.Add();
                     break;
                 case "3":
                     //_tableService.Add();
-                    Console.ReadKey();
                     break;
                 case "4":
-                    //_customerService.Add();
+                    _customerService.Add();
                     break;
                 case "5":
                     //_menuItemService.Add();
-                    Console.ReadKey();
                     break;
                 case "6":
                     //_reservationService.Add();
-                    Console.ReadKey();
                     break;
                 case "7":
                     //_orderService.Add();
-                    Console.ReadKey();
                     break;
                 case "8":
                     return;

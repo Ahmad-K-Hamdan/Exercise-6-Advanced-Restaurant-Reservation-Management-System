@@ -16,6 +16,12 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Customers.ToList();
         }
 
+        public void Add(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+        }
+
         public bool IsEmpty()
         {
             return !_context.Customers.Any();

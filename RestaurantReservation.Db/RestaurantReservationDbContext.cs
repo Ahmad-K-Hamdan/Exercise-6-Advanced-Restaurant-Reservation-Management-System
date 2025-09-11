@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using RestaurantReservation.Core.Models;
 
 namespace RestaurantReservation.Db

@@ -72,7 +72,7 @@ namespace RestaurantReservation.Services
             while (true)
             {
                 Console.Write(prompt);
-                var input = Console.ReadLine()?.Trim();
+                var input = Console.ReadLine()?.Trim()!;
 
                 var errorMessage = validator(input);
                 if (errorMessage == null)

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RestaurantReservation.Core.Constants
+﻿namespace RestaurantReservation.Core.Constants
 {
     public static class ValidationMessages
     {
@@ -27,5 +21,17 @@ namespace RestaurantReservation.Core.Constants
         public const string PhoneInvalid = "Please enter a valid phone number.";
         public const string TimeInvalid = "Please enter time in HH:mm format.";
         public const string TimeOutOfRange = "Time must be between 00:00 and 23:59.";
+
+        // Customer Messages - Prompts
+        public const string EnterFirstName = "Enter first name: ";
+        public const string EnterLastName = "Enter last name: ";
+        public const string EnterEmail = "Enter email: ";
+        public const string EnterCustomerPhone = "Enter phone number: ";
+
+        // Customer Messages - Validation
+        public const string NameTooShort = "Name must be at least 2 characters long.";
+        public const string NameTooLong = "Name cannot exceed 50 characters.";
+        public const string NameInvalidCharacters = "Name can only contain letters";
+        public const string EmailInvalid = "Please enter a valid email address.";
     }
 }
