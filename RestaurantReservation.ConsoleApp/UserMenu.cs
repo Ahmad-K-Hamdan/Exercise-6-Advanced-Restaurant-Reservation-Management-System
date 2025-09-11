@@ -4,7 +4,32 @@ namespace RestaurantReservation.ConsoleApp
 {
     public class UserMenu
     {
-        public static void ShowMainMenu(AllServices allServices)
+        private readonly RestaurantService _restaurantService;
+        private readonly EmployeeService _employeeService;
+        private readonly TableService _tableService;
+        private readonly ReservationService _reservationService;
+        private readonly MenuItemService _menuItemService;
+        private readonly OrderService _orderService;
+        private readonly OrderItemService _orderItemService;
+        private readonly CustomerService _customerService;
+
+        public UserMenu(
+            RestaurantService restaurantService, EmployeeService employeeService,
+            TableService tableService, ReservationService reservationService,
+            MenuItemService menuItemService, OrderService orderService,
+            OrderItemService orderItemService, CustomerService customerService)
+        {
+            _restaurantService = restaurantService;
+            _employeeService = employeeService;
+            _tableService = tableService;
+            _reservationService = reservationService;
+            _menuItemService = menuItemService;
+            _orderService = orderService;
+            _orderItemService = orderItemService;
+            _customerService = customerService;
+        }
+
+        public void ShowMainMenu()
         {
             while (true)
             {
@@ -21,7 +46,7 @@ namespace RestaurantReservation.ConsoleApp
                 switch (choice)
                 {
                     case "1":
-                        ViewDataMenu(allServices);
+                        ViewDataMenu();
                         break;
                     case "2":
                         //AddDataMenu();
@@ -45,7 +70,7 @@ namespace RestaurantReservation.ConsoleApp
             }
         }
 
-        private static void ViewDataMenu(AllServices allServices)
+        private void ViewDataMenu()
         {
             Console.Clear();
             Console.WriteLine("Which data would you like to view?");
@@ -63,21 +88,28 @@ namespace RestaurantReservation.ConsoleApp
             switch (choice)
             {
                 case "1":
-                    allServices.RestaurantService.ViewAll();
+                    _restaurantService.ViewAll();
                     break;
                 case "2":
+                    // _employeeService.ViewAll();
                     break;
                 case "3":
+                    // _tableService.ViewAll();
                     break;
                 case "4":
+                    // _reservationService.ViewAll();
                     break;
                 case "5":
+                    // _menuItemService.ViewAll();
                     break;
                 case "6":
+                    // _orderService.ViewAll();
                     break;
                 case "7":
+                    // _orderItemService.ViewAll();
                     break;
                 case "8":
+                    // _customerService.ViewAll();
                     break;
                 case "9":
                     return;
