@@ -13,10 +13,10 @@ namespace RestaurantReservation.ConsoleApp
 
             // Initialize services and repositories
             using var context = new RestaurantReservationDbContext();
-            var restaurantRepo = new RestaurantRepository(context);
-            var restaurantService = new RestaurantService(restaurantRepo);
+            var allRepos = new AllRepositories(context);
+            var allServices = new AllServices(allRepos);
 
-            UserMenu.ShowMainMenu(restaurantService);
+            UserMenu.ShowMainMenu(allServices);
         }
 
         private static void InitializeDatabase()

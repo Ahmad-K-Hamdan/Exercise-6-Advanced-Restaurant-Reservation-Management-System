@@ -2,5 +2,11 @@
 {
     public class CustomerRepository
     {
+        private readonly RestaurantReservationDbContext _context;
+
+        public CustomerRepository(RestaurantReservationDbContext context)
+        {
+            _context = context;
+        }
     }
 }

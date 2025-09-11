@@ -4,7 +4,7 @@ namespace RestaurantReservation.ConsoleApp
 {
     public class UserMenu
     {
-        public static void ShowMainMenu(RestaurantService restaurantService)
+        public static void ShowMainMenu(AllServices allServices)
         {
             while (true)
             {
@@ -21,7 +21,7 @@ namespace RestaurantReservation.ConsoleApp
                 switch (choice)
                 {
                     case "1":
-                        ViewDataMenu(restaurantService);
+                        ViewDataMenu(allServices);
                         break;
                     case "2":
                         //AddDataMenu();
@@ -45,7 +45,7 @@ namespace RestaurantReservation.ConsoleApp
             }
         }
 
-        private static void ViewDataMenu(RestaurantService restaurantService)
+        private static void ViewDataMenu(AllServices allServices)
         {
             Console.Clear();
             Console.WriteLine("Which data would you like to view?");
@@ -63,7 +63,7 @@ namespace RestaurantReservation.ConsoleApp
             switch (choice)
             {
                 case "1":
-                    restaurantService.ViewAll();
+                    allServices.RestaurantService.ViewAll();
                     break;
                 case "2":
                     break;
