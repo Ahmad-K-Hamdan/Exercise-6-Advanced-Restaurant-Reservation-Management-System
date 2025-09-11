@@ -9,5 +9,10 @@
         public required string PhoneNumber { get; set; }
 
         public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+        public override string ToString()
+        {
+            return $"Customer [ID: {CustomerId} | Name: {FirstName} {LastName} | Email: {Email} | Phone: {PhoneNumber}]";
+        }
     }
 }

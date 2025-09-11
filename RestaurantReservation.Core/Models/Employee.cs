@@ -10,5 +10,10 @@
 
         public required Restaurant Restaurant { get; set; }
         public List<Order> Orders { get; set; } = new List<Order>();
+
+        public override string ToString()
+        {
+            return $"Employee [ID: {EmployeeId} | Name: {FirstName} {LastName} | Position: {Position} | RestaurantID: {RestaurantId}]";
+        }
     }
 }

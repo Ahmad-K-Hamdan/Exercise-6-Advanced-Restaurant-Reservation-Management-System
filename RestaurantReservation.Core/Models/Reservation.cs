@@ -13,5 +13,10 @@
         public required Restaurant Restaurant { get; set; }
         public required Table Table { get; set; }
         public List<Order> Orders { get; set; } = new List<Order>();
+
+        public override string ToString()
+        {
+            return $"Reservation [ID: {ReservationId} | Date: {ReservationDate:g} | PartySize: {PartySize} | CustomerID: {CustomerId} | TableID: {TableId} | RestaurantID: {RestaurantId}]";
+        }
     }
 }

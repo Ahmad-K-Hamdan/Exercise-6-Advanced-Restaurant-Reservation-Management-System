@@ -13,11 +13,16 @@ namespace RestaurantReservation.ConsoleApp
         private readonly OrderItemService _orderItemService;
         private readonly CustomerService _customerService;
 
+        // Constructor injection - DI container will handle this automatically
         public UserMenu(
-            RestaurantService restaurantService, EmployeeService employeeService,
-            TableService tableService, ReservationService reservationService,
-            MenuItemService menuItemService, OrderService orderService,
-            OrderItemService orderItemService, CustomerService customerService)
+            RestaurantService restaurantService,
+            EmployeeService employeeService,
+            TableService tableService,
+            ReservationService reservationService,
+            MenuItemService menuItemService,
+            OrderService orderService,
+            OrderItemService orderItemService,
+            CustomerService customerService)
         {
             _restaurantService = restaurantService;
             _employeeService = employeeService;
@@ -91,25 +96,25 @@ namespace RestaurantReservation.ConsoleApp
                     _restaurantService.ViewAll();
                     break;
                 case "2":
-                    // _employeeService.ViewAll();
+                    _employeeService.ViewAll();
                     break;
                 case "3":
-                    // _tableService.ViewAll();
+                    _tableService.ViewAll();
                     break;
                 case "4":
-                    // _reservationService.ViewAll();
+                    _reservationService.ViewAll();
                     break;
                 case "5":
-                    // _menuItemService.ViewAll();
+                    _menuItemService.ViewAll();
                     break;
                 case "6":
-                    // _orderService.ViewAll();
+                    _orderService.ViewAll();
                     break;
                 case "7":
-                    // _orderItemService.ViewAll();
+                    _orderItemService.ViewAll();
                     break;
                 case "8":
-                    // _customerService.ViewAll();
+                    _customerService.ViewAll();
                     break;
                 case "9":
                     return;

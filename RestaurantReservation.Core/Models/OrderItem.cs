@@ -9,5 +9,10 @@
 
         public required Order Order { get; set; }
         public required MenuItem MenuItem { get; set; }
+
+        public override string ToString()
+        {
+            return $"OrderItem [ID: {OrderItemId} | OrderID: {OrderId} | ItemID: {ItemId} | Quantity: {Quantity}]";
+        }
     }
 }

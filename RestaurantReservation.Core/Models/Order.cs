@@ -11,5 +11,10 @@
         public required Reservation Reservation { get; set; }
         public required Employee Employee { get; set; }
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        public override string ToString()
+        {
+            return $"Order [ID: {OrderId} | Date: {OrderDate:g} | Total: {TotalAmount:C} | EmployeeID: {EmployeeId} | ReservationID: {ReservationId}]";
+        }
     }
 }

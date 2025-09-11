@@ -15,15 +15,15 @@ namespace RestaurantReservation.Services
         {
             if (IsEmpty())
             {
-                Console.WriteLine("No restaurants found.");
+                Console.WriteLine("\nNo restaurants found.");
                 return;
             }
 
             var restaurants = _restaurantRepo.GetAll();
-            Console.WriteLine("All Restaurants:");
+            Console.WriteLine("\nAll Restaurants:");
             foreach (var rest in restaurants)
             {
-                Console.WriteLine($"Id: {rest.RestaurantId} | Name: {rest.Name} | Address: {rest.Address} | Phone: {rest.PhoneNumber} | OpeningHours: {rest.OpeningHours}");
+                Console.WriteLine(rest.ToString());
             }
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();

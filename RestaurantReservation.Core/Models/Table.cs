@@ -7,6 +7,11 @@
         public required int Capacity { get; set; }
 
         public required Restaurant Restaurant { get; set; }
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public List<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+        public override string ToString()
+        {
+            return $"Table [ID: {TableId} | Capacity: {Capacity} | RestaurantID: {RestaurantId}]";
+        }
     }
 }

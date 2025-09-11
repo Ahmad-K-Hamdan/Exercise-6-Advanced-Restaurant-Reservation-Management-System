@@ -10,5 +10,28 @@ namespace RestaurantReservation.Services
         {
             _customerRepo = customerRepo;
         }
+
+        public void ViewAll()
+        {
+            if (IsEmpty())
+            {
+                Console.WriteLine("\nNo customers found.");
+                return;
+            }
+
+            var customers = _customerRepo.GetAll();
+            Console.WriteLine("\nAll Customers:");
+            foreach (var cust in customers)
+            {
+                Console.WriteLine(cust.ToString());
+            }
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        private bool IsEmpty()
+        {
+            return _customerRepo.IsEmpty();
+        }
     }
 }
