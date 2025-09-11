@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantReservation.Services
 {
-    internal class CustomerService
+    public class CustomerService
     {
     }
 }
