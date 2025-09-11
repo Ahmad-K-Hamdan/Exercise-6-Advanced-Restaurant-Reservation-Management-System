@@ -51,6 +51,7 @@
         public const string EnterTableId = "Enter table ID: ";
         public const string EnterMenuItemId = "Enter menu item ID: ";
         public const string EnterOrderId = "Enter order ID: ";
+        public const string EnterOrderItemId = "Enter order item ID: ";
         public const string EnterReservationId = "Enter reservation ID: ";
         public const string EnterTableCapacity = "Enter table capacity: ";
         public const string EnterMenuItemName = "Enter menu item name: ";
@@ -69,6 +70,7 @@
         public const string TableNotFound = "Table not found. Please enter a valid table ID.";
         public const string MenuItemNotFound = "Menu item not found. Please enter a valid menu item ID.";
         public const string OrderNotFound = "Order not found. Please enter a valid order ID.";
+        public const string OrderItemNotFound = "Order item not found. Please enter a valid order item ID.";
         public const string ReservationNotFound = "Reservation not found. Please enter a valid reservation ID.";
     }
 }

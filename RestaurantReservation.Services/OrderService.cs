@@ -76,6 +76,33 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Delete()
+        {
+            Console.WriteLine();
+            try
+            {
+                var orderId = InputHelper.GetValidOrderId(_orderRepo);
+                var order = _orderRepo.GetById(orderId);
+
+                if (order == null)
+                {
+                    Console.WriteLine("Order not found.");
+                }
+                else
+                {
+                    _orderRepo.Delete(order);
+                    Console.WriteLine($"Order with ID {orderId} deleted successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting order: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _orderRepo.IsEmpty();

@@ -168,5 +168,26 @@ namespace RestaurantReservation.Services.Helpers
                 }
             }
         }
+
+        public static int GetValidOrderItemId(OrderItemRepository orderItemRepo)
+        {
+            while (true)
+            {
+                Console.Write(ValidationMessages.EnterOrderItemId);
+                if (int.TryParse(Console.ReadLine(), out var id))
+                {
+                    var orderItem = orderItemRepo.GetById(id);
+                    if (orderItem != null)
+                    {
+                        return id;
+                    }
+                    Console.WriteLine(ValidationMessages.OrderItemNotFound);
+                }
+                else
+                {
+                    Console.WriteLine(ValidationMessages.InvalidNumber);
+                }
+            }
+        }
     }
 }

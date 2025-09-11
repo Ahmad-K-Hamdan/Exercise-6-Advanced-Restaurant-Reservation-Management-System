@@ -27,6 +27,18 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Customers.FirstOrDefault(cus => cus.CustomerId == CustomerId);
         }
 
+        public void Update(Customer customer)
+        {
+            _context.Customers.Update(customer);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Customer customer)
+        {
+            _context.Customers.Remove(customer);
+            _context.SaveChanges();
+        }
+
         public bool IsEmpty()
         {
             return !_context.Customers.Any();

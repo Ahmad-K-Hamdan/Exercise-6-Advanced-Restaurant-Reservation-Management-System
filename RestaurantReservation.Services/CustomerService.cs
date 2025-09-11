@@ -63,6 +63,33 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Delete()
+        {
+            Console.WriteLine();
+            try
+            {
+                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
+                var customer = _customerRepo.GetById(customerId);
+
+                if (customer == null)
+                {
+                    Console.WriteLine($"Customer not found.");
+                }
+                else
+                {
+                    _customerRepo.Delete(customer);
+                    Console.WriteLine($"Customer with ID {customerId} deleted successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting customer: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _customerRepo.IsEmpty();

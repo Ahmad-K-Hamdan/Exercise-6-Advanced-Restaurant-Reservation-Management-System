@@ -59,7 +59,7 @@ namespace RestaurantReservation.ConsoleApp
                         //ManageDataMenu();
                         break;
                     case "4":
-                        //DeleteDataMenu();
+                        DeleteDataMenu();
                         break;
                     case "5":
                         //SecondMenu();
@@ -164,6 +164,56 @@ namespace RestaurantReservation.ConsoleApp
                     break;
                 case "8":
                     _orderItemService.Add();
+                    break;
+                case "9":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Press any key to try again.");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void DeleteDataMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to delete?");
+            Console.WriteLine("1. Restaurant");
+            Console.WriteLine("2. Employee");
+            Console.WriteLine("3. Table");
+            Console.WriteLine("4. Customer");
+            Console.WriteLine("5. Menu Item");
+            Console.WriteLine("6. Reservation");
+            Console.WriteLine("7. Order");
+            Console.WriteLine("8. Order Item");
+            Console.WriteLine("9. Back to Main Menu");
+            Console.Write("Select an option: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    _restaurantService.Delete();
+                    break;
+                case "2":
+                    _employeeService.Delete();
+                    break;
+                case "3":
+                    _tableService.Delete();
+                    break;
+                case "4":
+                    _customerService.Delete();
+                    break;
+                case "5":
+                    _menuItemService.Delete();
+                    break;
+                case "6":
+                    _reservationService.Delete();
+                    break;
+                case "7":
+                    _orderService.Delete();
+                    break;
+                case "8":
+                    _orderItemService.Delete();
                     break;
                 case "9":
                     return;
