@@ -2,6 +2,7 @@
 using RestaurantReservation.Core.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services
 {
@@ -37,10 +38,10 @@ namespace RestaurantReservation.Services
             Console.WriteLine();
             try
             {
-                var name = GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
-                var address = GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
-                var phoneNumber = GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
-                var openingHours = GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
+                var address = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
+                var openingHours = InputHelper.GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
 
                 var newRestaurant = new Restaurant
                 {
@@ -65,23 +66,6 @@ namespace RestaurantReservation.Services
         private bool IsEmpty()
         {
             return _restaurantRepo.IsEmpty();
-        }
-
-        private string GetValidInput(string prompt, Func<string, string?> validator)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine()?.Trim()!;
-
-                var errorMessage = validator(input);
-                if (errorMessage == null)
-                {
-                    return input;
-                }
-
-                Console.WriteLine(errorMessage);
-            }
         }
     }
 }

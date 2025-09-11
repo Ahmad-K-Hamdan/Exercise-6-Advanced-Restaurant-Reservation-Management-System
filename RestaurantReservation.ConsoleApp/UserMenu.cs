@@ -135,7 +135,8 @@ namespace RestaurantReservation.ConsoleApp
             Console.WriteLine("5. Menu Item");
             Console.WriteLine("6. Reservation");
             Console.WriteLine("7. Order");
-            Console.WriteLine("8. Back to Main Menu");
+            Console.WriteLine("8. Order Item");
+            Console.WriteLine("9. Back to Main Menu");
             Console.Write("Select an option: ");
             var choice = Console.ReadLine();
             switch (choice)
@@ -144,24 +145,27 @@ namespace RestaurantReservation.ConsoleApp
                     _restaurantService.Add();
                     break;
                 case "2":
-                    // _employeeService.Add();
+                    _employeeService.Add();
                     break;
                 case "3":
-                    //_tableService.Add();
+                    _tableService.Add();
                     break;
                 case "4":
                     _customerService.Add();
                     break;
                 case "5":
-                    //_menuItemService.Add();
+                    _menuItemService.Add();
                     break;
                 case "6":
-                    //_reservationService.Add();
+                    _reservationService.Add();
                     break;
                 case "7":
-                    //_orderService.Add();
+                    _orderService.Add();
                     break;
                 case "8":
+                    _orderItemService.Add();
+                    break;
+                case "9":
                     return;
                 default:
                     Console.WriteLine("Invalid choice. Press any key to try again.");

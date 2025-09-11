@@ -2,6 +2,7 @@
 using RestaurantReservation.Core.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services
 {
@@ -40,12 +41,12 @@ namespace RestaurantReservation.Services
 
             try
             {
-                var restaurantId = GetValidRestaurantId();
+                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
                 var restaurant = _restaurantRepo.GetById(restaurantId);
 
-                var name = GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
-                var description = GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
-                var priceInput = GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
+                var description = InputHelper.GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
+                var priceInput = InputHelper.GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
                 var price = decimal.Parse(priceInput);
 
                 var newMenuItem = new MenuItem
@@ -72,44 +73,6 @@ namespace RestaurantReservation.Services
         private bool IsEmpty()
         {
             return _menuItemRepo.IsEmpty();
-        }
-
-        private int GetValidRestaurantId()
-        {
-            while (true)
-            {
-                Console.Write(ValidationMessages.EnterRestaurantId);
-                if (int.TryParse(Console.ReadLine(), out var id))
-                {
-                    var restaurant = _restaurantRepo.GetById(id);
-                    if (restaurant != null)
-                    {
-                        return id;
-                    }
-                    Console.WriteLine(ValidationMessages.RestaurantNotFound);
-                }
-                else
-                {
-                    Console.WriteLine(ValidationMessages.InvalidNumber);
-                }
-            }
-        }
-
-        private string GetValidInput(string prompt, Func<string, string?> validator)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine()?.Trim()!;
-
-                var errorMessage = validator(input);
-                if (errorMessage == null)
-                {
-                    return input;
-                }
-
-                Console.WriteLine(errorMessage);
-            }
         }
     }
 }

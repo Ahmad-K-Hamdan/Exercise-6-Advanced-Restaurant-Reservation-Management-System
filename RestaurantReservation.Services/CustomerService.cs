@@ -2,6 +2,7 @@
 using RestaurantReservation.Core.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services
 {
@@ -37,10 +38,10 @@ namespace RestaurantReservation.Services
             Console.WriteLine();
             try
             {
-                var firstName = GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
-                var lastName = GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
-                var email = GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
-                var phoneNumber = GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
+                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
+                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
+                var email = InputHelper.GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
 
                 var newCustomer = new Customer
                 {
@@ -65,23 +66,6 @@ namespace RestaurantReservation.Services
         private bool IsEmpty()
         {
             return _customerRepo.IsEmpty();
-        }
-
-        private string GetValidInput(string prompt, Func<string, string?> validator)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine()?.Trim()!;
-
-                var errorMessage = validator(input);
-                if (errorMessage == null)
-                {
-                    return input;
-                }
-
-                Console.WriteLine(errorMessage);
-            }
         }
     }
 }

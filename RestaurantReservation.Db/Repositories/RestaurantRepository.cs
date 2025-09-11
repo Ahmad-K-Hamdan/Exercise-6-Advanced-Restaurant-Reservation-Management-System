@@ -16,20 +16,15 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Restaurants.ToList();
         }
 
-        public bool IsEmpty()
-        {
-            return !_context.Restaurants.Any();
-        }
-
-        public Restaurant? GetById(int id)
-        {
-            return _context.Restaurants.FirstOrDefault(rest => rest.RestaurantId == id);
-        }
-
         public void Add(Restaurant restaurant)
         {
             _context.Restaurants.Add(restaurant);
             _context.SaveChanges();
+        }
+
+        public Restaurant? GetById(int RestaurantId)
+        {
+            return _context.Restaurants.FirstOrDefault(rest => rest.RestaurantId == RestaurantId);
         }
 
         public void Update(Restaurant restaurant)
@@ -42,6 +37,11 @@ namespace RestaurantReservation.Db.Repositories
         {
             _context.Restaurants.Remove(restaurant);
             _context.SaveChanges();
+        }
+
+        public bool IsEmpty()
+        {
+            return !_context.Restaurants.Any();
         }
     }
 }

@@ -2,6 +2,7 @@
 using RestaurantReservation.Core.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services
 {
@@ -41,13 +42,13 @@ namespace RestaurantReservation.Services
             Console.WriteLine();
             try
             {
-                var orderId = GetValidOrderId();
+                var orderId = InputHelper.GetValidOrderId(_orderRepo);
                 var order = _orderRepo.GetById(orderId);
 
-                var menuItemId = GetValidMenuItemId();
+                var menuItemId = InputHelper.GetValidMenuItemId(_menuItemRepo);
                 var menuItem = _menuItemRepo.GetById(menuItemId);
 
-                var quantityInput = GetValidInput(ValidationMessages.EnterQuantity, OrderItemValidator.ValidateQuantity);
+                var quantityInput = InputHelper.GetValidInput(ValidationMessages.EnterQuantity, OrderItemValidator.ValidateQuantity);
                 var quantity = int.Parse(quantityInput);
 
                 var newOrderItem = new OrderItem
@@ -74,65 +75,6 @@ namespace RestaurantReservation.Services
         private bool IsEmpty()
         {
             return _orderItemRepo.IsEmpty();
-        }
-
-        private int GetValidOrderId()
-        {
-            while (true)
-            {
-                Console.Write(ValidationMessages.EnterOrderId);
-                if (int.TryParse(Console.ReadLine(), out var id))
-                {
-                    var order = _orderRepo.GetById(id);
-                    if (order != null)
-                    {
-                        return id;
-                    }
-                    Console.WriteLine(ValidationMessages.OrderNotFound);
-                }
-                else
-                {
-                    Console.WriteLine(ValidationMessages.InvalidNumber);
-                }
-            }
-        }
-
-        private int GetValidMenuItemId()
-        {
-            while (true)
-            {
-                Console.Write(ValidationMessages.EnterMenuItemId);
-                if (int.TryParse(Console.ReadLine(), out var id))
-                {
-                    var menuItem = _menuItemRepo.GetById(id);
-                    if (menuItem != null)
-                    {
-                        return id;
-                    }
-                    Console.WriteLine(ValidationMessages.MenuItemNotFound);
-                }
-                else
-                {
-                    Console.WriteLine(ValidationMessages.InvalidNumber);
-                }
-            }
-        }
-
-        private string GetValidInput(string prompt, Func<string, string?> validator)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                var input = Console.ReadLine()?.Trim()!;
-
-                var errorMessage = validator(input);
-                if (errorMessage == null)
-                {
-                    return input;
-                }
-
-                Console.WriteLine(errorMessage);
-            }
         }
     }
 }
