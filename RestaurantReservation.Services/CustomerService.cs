@@ -40,7 +40,7 @@ namespace RestaurantReservation.Services
                 var firstName = GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
                 var lastName = GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
                 var email = GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
-                var phoneNumber = GetValidInput(ValidationMessages.EnterCustomerPhone, CustomerValidator.ValidatePhoneNumber);
+                var phoneNumber = GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
 
                 var newCustomer = new Customer
                 {

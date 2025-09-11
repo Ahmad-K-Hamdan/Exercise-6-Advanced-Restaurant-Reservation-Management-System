@@ -39,7 +39,7 @@ namespace RestaurantReservation.Services
             {
                 var name = GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
                 var address = GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
-                var phoneNumber = GetValidInput(ValidationMessages.EnterRestaurantPhone, RestaurantValidator.ValidatePhoneNumber);
+                var phoneNumber = GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
                 var openingHours = GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
 
                 var newRestaurant = new Restaurant

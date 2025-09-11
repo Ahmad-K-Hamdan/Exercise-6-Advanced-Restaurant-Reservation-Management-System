@@ -14,12 +14,12 @@ namespace RestaurantReservation.Core.Validation
 
             if (name.Length < 2)
             {
-                return ValidationMessages.RestaurantNameTooShort;
+                return ValidationMessages.NameTooShort;
             }
 
             if (name.Length > 100)
             {
-                return ValidationMessages.RestaurantNameTooLong;
+                return ValidationMessages.NameTooLong;
             }
 
             return null;
