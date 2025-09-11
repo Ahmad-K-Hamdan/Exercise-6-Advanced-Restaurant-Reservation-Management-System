@@ -16,6 +16,17 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Orders.ToList();
         }
 
+        public void Add(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+        }
+
+        public Order? GetById(int OrderId)
+        {
+            return _context.Orders.FirstOrDefault(o => o.OrderId == OrderId);
+        }
+
         public bool IsEmpty()
         {
             return !_context.Orders.Any();

@@ -1,14 +1,19 @@
-﻿using RestaurantReservation.Db.Repositories;
+﻿using RestaurantReservation.Core.Constants;
+using RestaurantReservation.Core.Models;
+using RestaurantReservation.Core.Validation;
+using RestaurantReservation.Db.Repositories;
 
 namespace RestaurantReservation.Services
 {
     public class MenuItemService
     {
         private readonly MenuItemRepository _menuItemRepo;
+        private readonly RestaurantRepository _restaurantRepo;
 
-        public MenuItemService(MenuItemRepository MenuItemRepo)
+        public MenuItemService(MenuItemRepository menuItemRepo, RestaurantRepository restaurantRepo)
         {
-            _menuItemRepo = MenuItemRepo;
+            _menuItemRepo = menuItemRepo;
+            _restaurantRepo = restaurantRepo;
         }
 
         public void ViewAll()
@@ -29,9 +34,82 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Add()
+        {
+            Console.WriteLine();
+
+            try
+            {
+                var restaurantId = GetValidRestaurantId();
+                var restaurant = _restaurantRepo.GetById(restaurantId);
+
+                var name = GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
+                var description = GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
+                var priceInput = GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
+                var price = decimal.Parse(priceInput);
+
+                var newMenuItem = new MenuItem
+                {
+                    RestaurantId = restaurantId,
+                    Name = name,
+                    Description = description,
+                    Price = price,
+                    Restaurant = restaurant!
+                };
+
+                _menuItemRepo.Add(newMenuItem);
+                Console.WriteLine($"Menu item '{name}' added successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding menu item: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _menuItemRepo.IsEmpty();
+        }
+
+        private int GetValidRestaurantId()
+        {
+            while (true)
+            {
+                Console.Write(ValidationMessages.EnterRestaurantId);
+                if (int.TryParse(Console.ReadLine(), out var id))
+                {
+                    var restaurant = _restaurantRepo.GetById(id);
+                    if (restaurant != null)
+                    {
+                        return id;
+                    }
+                    Console.WriteLine(ValidationMessages.RestaurantNotFound);
+                }
+                else
+                {
+                    Console.WriteLine(ValidationMessages.InvalidNumber);
+                }
+            }
+        }
+
+        private string GetValidInput(string prompt, Func<string, string?> validator)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                var input = Console.ReadLine()?.Trim()!;
+
+                var errorMessage = validator(input);
+                if (errorMessage == null)
+                {
+                    return input;
+                }
+
+                Console.WriteLine(errorMessage);
+            }
         }
     }
 }

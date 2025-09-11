@@ -16,6 +16,17 @@ namespace RestaurantReservation.Db.Repositories
             return _context.MenuItems.ToList();
         }
 
+        public void Add(MenuItem menuItem)
+        {
+            _context.MenuItems.Add(menuItem);
+            _context.SaveChanges();
+        }
+
+        public MenuItem? GetById(int ItemId)
+        {
+            return _context.MenuItems.FirstOrDefault(mi => mi.ItemId == ItemId);
+        }
+
         public bool IsEmpty()
         {
             return !_context.MenuItems.Any();
