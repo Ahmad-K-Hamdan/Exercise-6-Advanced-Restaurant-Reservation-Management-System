@@ -91,6 +91,41 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var tableId = InputHelper.GetValidTableId(_tableRepo);
+                var table = _tableRepo.GetById(tableId);
+
+                if (table == null)
+                {
+                    Console.WriteLine($"Table with ID {tableId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Table: {table}");
+
+                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
+                var capacityInput = InputHelper.GetValidInput(ValidationMessages.EnterTableCapacity, TableValidator.ValidateCapacity);
+                var capacity = int.Parse(capacityInput);
+
+                table.RestaurantId = restaurantId;
+                table.Capacity = capacity;
+
+                _tableRepo.Update(table);
+                Console.WriteLine($"Table with ID {tableId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating table: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _tableRepo.IsEmpty();

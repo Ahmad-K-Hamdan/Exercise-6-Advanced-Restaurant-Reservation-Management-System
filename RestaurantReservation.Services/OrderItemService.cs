@@ -99,6 +99,39 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var orderItemId = InputHelper.GetValidOrderItemId(_orderItemRepo);
+                var orderItem = _orderItemRepo.GetById(orderItemId);
+
+                if (orderItem == null)
+                {
+                    Console.WriteLine($"Order item with ID {orderItemId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Order Item: {orderItem}");
+
+                var quantityInput = InputHelper.GetValidInput(ValidationMessages.EnterQuantity, OrderItemValidator.ValidateQuantity);
+                var quantity = int.Parse(quantityInput);
+
+                orderItem.Quantity = quantity;
+
+                _orderItemRepo.Update(orderItem);
+                Console.WriteLine($"Order item with ID {orderItemId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error managing order item: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _orderItemRepo.IsEmpty();

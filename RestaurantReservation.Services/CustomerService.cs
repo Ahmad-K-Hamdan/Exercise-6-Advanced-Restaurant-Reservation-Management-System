@@ -90,6 +90,44 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
+                var customer = _customerRepo.GetById(customerId);
+
+                if (customer == null)
+                {
+                    Console.WriteLine($"Customer not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Customer: {customer}");
+
+                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
+                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
+                var email = InputHelper.GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
+
+                customer.FirstName = firstName;
+                customer.LastName = lastName;
+                customer.Email = email;
+                customer.PhoneNumber = phoneNumber;
+
+                _customerRepo.Update(customer);
+                Console.WriteLine($"Customer with ID {customerId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error managing customer: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _customerRepo.IsEmpty();

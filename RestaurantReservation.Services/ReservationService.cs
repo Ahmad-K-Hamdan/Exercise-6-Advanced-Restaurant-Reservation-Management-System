@@ -110,6 +110,43 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
+                var reservation = _reservationRepo.GetById(reservationId);
+
+                if (reservation == null)
+                {
+                    Console.WriteLine("Reservation not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Reservation: {reservation}");
+
+                var reservationDateInput = InputHelper.GetValidInput(ValidationMessages.EnterReservationDate, ReservationValidator.ValidateReservationDate);
+                var reservationDate = DateTime.Parse(reservationDateInput);
+
+                var partySizeInput = InputHelper.GetValidInput(ValidationMessages.EnterPartySize, ReservationValidator.ValidatePartySize);
+                var partySize = int.Parse(partySizeInput);
+
+                reservation.ReservationDate = reservationDate;
+                reservation.PartySize = partySize;
+
+                _reservationRepo.Update(reservation);
+                Console.WriteLine($"Reservation with ID {reservationId} updated successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating reservation: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _reservationRepo.IsEmpty();

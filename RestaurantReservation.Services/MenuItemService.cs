@@ -97,6 +97,43 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var menuItemId = InputHelper.GetValidMenuItemId(_menuItemRepo);
+                var menuItem = _menuItemRepo.GetById(menuItemId);
+
+                if (menuItem == null)
+                {
+                    Console.WriteLine($"Menu item with ID {menuItemId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Menu Item: {menuItem}");
+
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
+                var description = InputHelper.GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
+                var priceInput = InputHelper.GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
+                var price = decimal.Parse(priceInput);
+
+                menuItem.Name = name;
+                menuItem.Description = description;
+                menuItem.Price = price;
+
+                _menuItemRepo.Update(menuItem);
+                Console.WriteLine($"Menu item with ID {menuItemId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error managing menu item: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _menuItemRepo.IsEmpty();

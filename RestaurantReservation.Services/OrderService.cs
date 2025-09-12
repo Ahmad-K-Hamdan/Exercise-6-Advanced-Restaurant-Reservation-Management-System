@@ -103,6 +103,38 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var orderId = InputHelper.GetValidOrderId(_orderRepo);
+                var order = _orderRepo.GetById(orderId);
+
+                if (order == null)
+                {
+                    Console.WriteLine($"Order with ID {orderId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Order: {order}");
+
+                var employeeId = InputHelper.GetValidEmployeeId(_employeeRepo);
+
+                order.EmployeeId = employeeId;
+
+                _orderRepo.Update(order);
+                Console.WriteLine($"Order with ID {orderId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error managing order: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _orderRepo.IsEmpty();

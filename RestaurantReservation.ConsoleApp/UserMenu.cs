@@ -56,7 +56,7 @@ namespace RestaurantReservation.ConsoleApp
                         AddDataMenu();
                         break;
                     case "3":
-                        //ManageDataMenu();
+                        ManageDataMenu();
                         break;
                     case "4":
                         DeleteDataMenu();
@@ -214,6 +214,56 @@ namespace RestaurantReservation.ConsoleApp
                     break;
                 case "8":
                     _orderItemService.Delete();
+                    break;
+                case "9":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Press any key to try again.");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void ManageDataMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to manage?");
+            Console.WriteLine("1. Restaurant");
+            Console.WriteLine("2. Employee");
+            Console.WriteLine("3. Table");
+            Console.WriteLine("4. Customer");
+            Console.WriteLine("5. Menu Item");
+            Console.WriteLine("6. Reservation");
+            Console.WriteLine("7. Order");
+            Console.WriteLine("8. Order Item");
+            Console.WriteLine("9. Back to Main Menu");
+            Console.Write("Select an option: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    _restaurantService.Update();
+                    break;
+                case "2":
+                    _employeeService.Update();
+                    break;
+                case "3":
+                    _tableService.Update();
+                    break;
+                case "4":
+                    _customerService.Update();
+                    break;
+                case "5":
+                    _menuItemService.Update();
+                    break;
+                case "6":
+                    _reservationService.Update();
+                    break;
+                case "7":
+                    _orderService.Update();
+                    break;
+                case "8":
+                    _orderItemService.Update();
                     break;
                 case "9":
                     return;

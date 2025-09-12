@@ -90,6 +90,44 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
+                var restaurant = _restaurantRepo.GetById(restaurantId);
+
+                if (restaurant == null)
+                {
+                    Console.WriteLine($"Restaurant with ID {restaurantId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Restaurant: {restaurant}");
+
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
+                var address = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
+                var openingHours = InputHelper.GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
+
+                restaurant.Name = name;
+                restaurant.Address = address;
+                restaurant.PhoneNumber = phoneNumber;
+                restaurant.OpeningHours = TimeSpan.Parse(openingHours);
+
+                _restaurantRepo.Update(restaurant);
+                Console.WriteLine($"Restaurant with ID {restaurantId} updated successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating restaurant: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _restaurantRepo.IsEmpty();

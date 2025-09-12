@@ -94,6 +94,42 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var employeeId = InputHelper.GetValidEmployeeId(_employeeRepo);
+                var employee = _employeeRepo.GetById(employeeId);
+
+                if (employee == null)
+                {
+                    Console.WriteLine("Employee not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Employee: {employee}");
+
+                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, EmployeeValidator.ValidateFirstName);
+                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, EmployeeValidator.ValidateLastName);
+                var position = InputHelper.GetValidInput(ValidationMessages.EnterPosition, EmployeeValidator.ValidatePosition);
+
+                employee.FirstName = firstName;
+                employee.LastName = lastName;
+                employee.Position = position;
+
+                _employeeRepo.Update(employee);
+                Console.WriteLine($"Employee with ID {employeeId} updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error managing employee: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
         private bool IsEmpty()
         {
             return _employeeRepo.IsEmpty();
