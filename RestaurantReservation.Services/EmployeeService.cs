@@ -130,6 +130,33 @@ namespace RestaurantReservation.Services
             Console.ReadKey();
         }
 
+        public void ListManagers()
+        {
+            if (IsEmpty())
+            {
+                Console.WriteLine("\nNo employees found.");
+                return;
+            }
+
+            var managers = _employeeRepo.GetManagers();
+            if (!managers.Any())
+            {
+                Console.WriteLine("\nNo managers found.");
+            }
+            else
+            {
+                Console.WriteLine("\nManagers:");
+                foreach (var manager in managers)
+                {
+                    Console.WriteLine(manager.ToString());
+                }
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+
         private bool IsEmpty()
         {
             return _employeeRepo.IsEmpty();

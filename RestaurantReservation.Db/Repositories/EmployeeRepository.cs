@@ -39,6 +39,11 @@ namespace RestaurantReservation.Db.Repositories
             _context.SaveChanges();
         }
 
+        public List<Employee> GetManagers()
+        {
+            return _context.Employees.Where(emp => emp.Position == "Manager").ToList();
+        }
+
         public bool IsEmpty()
         {
             return !_context.Employees.Any();

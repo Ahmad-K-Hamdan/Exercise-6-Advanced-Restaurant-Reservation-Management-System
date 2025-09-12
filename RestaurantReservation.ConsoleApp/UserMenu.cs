@@ -44,7 +44,8 @@ namespace RestaurantReservation.ConsoleApp
                 Console.WriteLine("3. Manage Data");
                 Console.WriteLine("4. Delete Data");
                 Console.WriteLine("5. Second Menu");
-                Console.WriteLine("6. Exit");
+                Console.WriteLine("6. Third Menu");
+                Console.WriteLine("7. Exit");
                 Console.Write("Select an option: ");
                 var choice = Console.ReadLine();
                 switch (choice)
@@ -62,9 +63,12 @@ namespace RestaurantReservation.ConsoleApp
                         DeleteDataMenu();
                         break;
                     case "5":
-                        //SecondMenu();
+                        SecondMenu();
                         break;
                     case "6":
+                        // ThirdMenu();
+                        break;
+                    case "7":
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Press any key to try again.");
@@ -266,6 +270,44 @@ namespace RestaurantReservation.ConsoleApp
                     _orderItemService.Update();
                     break;
                 case "9":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Press any key to try again.");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void SecondMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine("1. List all managers");
+            Console.WriteLine("2. List all reservations for a customer");
+            Console.WriteLine("3. List all orders for a reservation");
+            Console.WriteLine("4. List all ordered items in a reservation");
+            Console.WriteLine("5. Calculate average amount for an employee");
+            Console.WriteLine("6. Back to Main Menu");
+            Console.Write("Select an option: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    _employeeService.ListManagers();
+                    break;
+                case "2":
+                    // _reservationService.ListReservationsByCustomer();
+                    break;
+                case "3":
+                    // _orderService.ListOrdersByReservation();
+                    break;
+                case "4":
+                    // _orderItemService.ListOrderItemsByReservation();
+                    break;
+                case "5":
+                    // _orderService.CalculateAverageAmountByEmployee();
+                    break;
+                case "6":
                     return;
                 default:
                     Console.WriteLine("Invalid choice. Press any key to try again.");
