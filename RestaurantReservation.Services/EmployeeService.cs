@@ -31,7 +31,7 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine(emp.ToString());
             }
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -64,7 +64,7 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error adding employee: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -90,7 +90,7 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error deleting employee: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -126,7 +126,7 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error managing employee: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -152,7 +152,7 @@ namespace RestaurantReservation.Services
                 }
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 

@@ -39,6 +39,11 @@ namespace RestaurantReservation.Db.Repositories
             _context.SaveChanges();
         }
 
+        public List<Reservation> GetByCustomerId(int CustomerId)
+        {
+            return _context.Reservations.Where(res => res.CustomerId == CustomerId).ToList();
+        }
+
         public bool IsEmpty()
         {
             return !_context.Reservations.Any();

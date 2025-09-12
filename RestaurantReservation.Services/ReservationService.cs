@@ -35,7 +35,7 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine(res.ToString());
             }
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -79,7 +79,7 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error adding reservation: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -106,7 +106,7 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error deleting reservation: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 
@@ -143,7 +143,43 @@ namespace RestaurantReservation.Services
                 Console.WriteLine($"Error updating reservation: {ex.Message}");
             }
 
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
+        }
+
+        public void ListReservationsByCustomer()
+        {
+            Console.WriteLine();
+            try
+            {
+                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
+                var customer = _customerRepo.GetById(customerId);
+
+                if (customer == null)
+                {
+                    Console.WriteLine("Customer not found.");
+                    return;
+                }
+
+                var reservations = _reservationRepo.GetByCustomerId(customerId);
+                if (reservations.Count == 0)
+                {
+                    Console.WriteLine($"No reservations found for customer {customer.FirstName} {customer.LastName}.");
+                    return;
+                }
+
+                Console.WriteLine($"\nReservations for {customer.FirstName} {customer.LastName}:");
+                foreach (var res in reservations)
+                {
+                    Console.WriteLine(res.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving reservations: {ex.Message}");
+            }
+
+            Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
         }
 

@@ -296,7 +296,7 @@ namespace RestaurantReservation.ConsoleApp
                     _employeeService.ListManagers();
                     break;
                 case "2":
-                    // _reservationService.ListReservationsByCustomer();
+                    _reservationService.ListReservationsByCustomer();
                     break;
                 case "3":
                     // _orderService.ListOrdersByReservation();
