@@ -1,0 +1,125 @@
+﻿using RestaurantReservation.Core.Constants;
+using RestaurantReservation.Core.Models;
+using RestaurantReservation.Core.Validation;
+using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.Helpers;
+
+namespace RestaurantReservation.Services.MainServices
+{
+    public class RestaurantService
+    {
+        private readonly RestaurantRepository _restaurantRepo;
+
+        public RestaurantService(RestaurantRepository restaurantRepo)
+        {
+            _restaurantRepo = restaurantRepo;
+        }
+
+        public void ViewAll()
+        {
+            if (IsEmpty())
+            {
+                Console.WriteLine("\nNo restaurants found.");
+                return;
+            }
+
+            var restaurants = _restaurantRepo.GetAll();
+            Console.WriteLine("\nAll Restaurants:");
+            foreach (var rest in restaurants)
+            {
+                Console.WriteLine(rest.ToString());
+            }
+        }
+
+        public void Add()
+        {
+            Console.WriteLine();
+            try
+            {
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
+                var address = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
+                var openingHours = InputHelper.GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
+
+                var newRestaurant = new Restaurant
+                {
+                    Name = name,
+                    Address = address,
+                    PhoneNumber = phoneNumber,
+                    OpeningHours = TimeSpan.Parse(openingHours)
+                };
+
+                _restaurantRepo.Add(newRestaurant);
+                Console.WriteLine($"Restaurant '{name}' added successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding restaurant: {ex.Message}");
+            }
+        }
+
+        public void Delete()
+        {
+            Console.WriteLine();
+            try
+            {
+                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
+                var restaurant = _restaurantRepo.GetById(restaurantId);
+
+                if (restaurant == null)
+                {
+                    Console.WriteLine("Restaurant not found.");
+                }
+                else
+                {
+                    _restaurantRepo.Delete(restaurant);
+                    Console.WriteLine($"Restaurant with ID {restaurantId} deleted successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting restaurant: {ex.Message}");
+            }
+        }
+
+        public void Update()
+        {
+            Console.WriteLine();
+            try
+            {
+                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
+                var restaurant = _restaurantRepo.GetById(restaurantId);
+
+                if (restaurant == null)
+                {
+                    Console.WriteLine($"Restaurant with ID {restaurantId} not found.");
+                    return;
+                }
+
+                Console.WriteLine($"Managing Restaurant: {restaurant}");
+
+                var name = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantName, RestaurantValidator.ValidateRestaurantName);
+                var address = InputHelper.GetValidInput(ValidationMessages.EnterRestaurantAddress, RestaurantValidator.ValidateAddress);
+                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, RestaurantValidator.ValidatePhoneNumber);
+                var openingHours = InputHelper.GetValidInput(ValidationMessages.EnterOpeningHours, RestaurantValidator.ValidateTimeSpan);
+
+                restaurant.Name = name;
+                restaurant.Address = address;
+                restaurant.PhoneNumber = phoneNumber;
+                restaurant.OpeningHours = TimeSpan.Parse(openingHours);
+
+                _restaurantRepo.Update(restaurant);
+                Console.WriteLine($"Restaurant with ID {restaurantId} updated successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating restaurant: {ex.Message}");
+            }
+        }
+
+        private bool IsEmpty()
+        {
+            return _restaurantRepo.IsEmpty();
+        }
+    }
+}

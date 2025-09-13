@@ -1,0 +1,91 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using RestaurantReservation.ConsoleApp.Menus;
+using RestaurantReservation.Db;
+using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Services.MainServices;
+using RestaurantReservation.Services.SpecialServices;
+
+namespace RestaurantReservation.ConsoleApp
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            // Create service collection and configure services
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+
+            // Build service provider
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            // Ensure database is created and connection is established
+            if (!InitializeDatabase(serviceProvider))
+            {
+                return;
+            }
+
+            // Start the program
+            var mainMenu = serviceProvider.GetRequiredService<MainMenu>();
+            mainMenu.Show();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            // Register DbContext
+            services.AddDbContext<RestaurantReservationDbContext>();
+
+            // Register Repositories 
+            services.AddScoped<RestaurantRepository>();
+            services.AddScoped<CustomerRepository>();
+            services.AddScoped<EmployeeRepository>();
+            services.AddScoped<MenuItemRepository>();
+            services.AddScoped<OrderItemRepository>();
+            services.AddScoped<OrderRepository>();
+            services.AddScoped<ReservationRepository>();
+            services.AddScoped<TableRepository>();
+            services.AddScoped<ViewRepository>();
+            services.AddScoped<FunctionRepository>();
+            services.AddScoped<StoredProcedureRepository>();
+
+            // Register Services
+            services.AddScoped<RestaurantService>();
+            services.AddScoped<CustomerService>();
+            services.AddScoped<EmployeeService>();
+            services.AddScoped<MenuItemService>();
+            services.AddScoped<OrderItemService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<ReservationService>();
+            services.AddScoped<TableService>();
+            services.AddScoped<ViewService>();
+            services.AddScoped<FunctionService>();
+            services.AddScoped<StoredProcedureService>();
+
+            // Register All Menus
+            services.AddScoped<MainMenu>();
+            services.AddScoped<ViewDataMenu>();
+            services.AddScoped<AddDataMenu>();
+            services.AddScoped<ManageDataMenu>();
+            services.AddScoped<DeleteDataMenu>();
+            services.AddScoped<QueriesMenu>();
+            services.AddScoped<DatabaseFeaturesMenu>();
+        }
+
+        private static bool InitializeDatabase(IServiceProvider serviceProvider)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<RestaurantReservationDbContext>();
+                    context.Database.EnsureCreated();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while connecting to the database: {ex.Message}");
+                return false;
+            }
+            return true;
+        }
+    }
+}
