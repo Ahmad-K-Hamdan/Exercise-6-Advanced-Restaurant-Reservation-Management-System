@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Core.Models;
-using RestaurantReservation.Db.Migrations;
 
 namespace RestaurantReservation.Db
 {

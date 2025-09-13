@@ -1,7 +1,6 @@
-﻿using RestaurantReservation.Db;
-using RestaurantReservation.Db.Repositories;
+﻿using RestaurantReservation.Db.Repositories;
 
-namespace RestaurantReservation.Services
+namespace RestaurantReservation.Services.SpecialServices
 {
     public class ViewService
     {

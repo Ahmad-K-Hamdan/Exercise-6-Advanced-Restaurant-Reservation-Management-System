@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Models;
-using RestaurantReservation.Core.DTOs;
+﻿using RestaurantReservation.Core.DTOs;
 
 namespace RestaurantReservation.Db.Repositories
 {

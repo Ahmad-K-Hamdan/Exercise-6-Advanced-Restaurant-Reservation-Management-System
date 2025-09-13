@@ -1,8 +1,7 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Repositories;
+﻿using RestaurantReservation.Db.Repositories;
 using RestaurantReservation.Services.Helpers;
 
-namespace RestaurantReservation.Services
+namespace RestaurantReservation.Services.SpecialServices
 {
     public class FunctionService
     {

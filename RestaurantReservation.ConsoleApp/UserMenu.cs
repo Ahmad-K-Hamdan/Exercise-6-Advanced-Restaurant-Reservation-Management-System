@@ -1,6 +1,6 @@
-﻿using RestaurantReservation.Services;
-using RestaurantReservation.Services.Helpers;
+﻿using RestaurantReservation.Services.Helpers;
 using RestaurantReservation.Services.MainServices;
+using RestaurantReservation.Services.SpecialServices;
 
 namespace RestaurantReservation.ConsoleApp
 {
@@ -16,6 +16,7 @@ namespace RestaurantReservation.ConsoleApp
         private readonly CustomerService _customerService;
         private readonly ViewService _viewService;
         private readonly FunctionService _functionService;
+        private readonly StoredProcedureService _storedProcedureService;
 
         public UserMenu(
             RestaurantService restaurantService,
@@ -27,7 +28,8 @@ namespace RestaurantReservation.ConsoleApp
             OrderItemService orderItemService,
             CustomerService customerService,
             ViewService viewService,
-            FunctionService functionService)
+            FunctionService functionService,
+            StoredProcedureService storedProcedureService)
         {
             _restaurantService = restaurantService;
             _employeeService = employeeService;
@@ -39,6 +41,7 @@ namespace RestaurantReservation.ConsoleApp
             _customerService = customerService;
             _viewService = viewService;
             _functionService = functionService;
+            _storedProcedureService = storedProcedureService;
         }
 
         public void ShowMainMenu()
@@ -387,6 +390,7 @@ namespace RestaurantReservation.ConsoleApp
                     InputHelper.Continue();
                     break;
                 case "4":
+                    _storedProcedureService.ListAllCusWithMinPartySize();
                     InputHelper.Continue();
                     break;
                 case "5":

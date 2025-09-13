@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Repositories;
-using RestaurantReservation.Services;
 using RestaurantReservation.Services.MainServices;
+using RestaurantReservation.Services.SpecialServices;
 
 namespace RestaurantReservation.ConsoleApp
 {
@@ -44,6 +44,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<TableRepository>();
             services.AddScoped<ViewRepository>();
             services.AddScoped<FunctionRepository>();
+            services.AddScoped<StoredProcedureRepository>();
 
             // Register Services
             services.AddScoped<RestaurantService>();
@@ -56,6 +57,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<TableService>();
             services.AddScoped<ViewService>();
             services.AddScoped<FunctionService>();
+            services.AddScoped<StoredProcedureService>();
 
             // Register Main Menu
             services.AddScoped<UserMenu>();
