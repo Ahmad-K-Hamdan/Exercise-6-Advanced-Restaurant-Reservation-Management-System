@@ -43,6 +43,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<ReservationRepository>();
             services.AddScoped<TableRepository>();
             services.AddScoped<ViewRepository>();
+            services.AddScoped<FunctionRepository>();
 
             // Register Services
             services.AddScoped<RestaurantService>();
@@ -54,6 +55,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<ReservationService>();
             services.AddScoped<TableService>();
             services.AddScoped<ViewService>();
+            services.AddScoped<FunctionService>();
 
             // Register Main Menu
             services.AddScoped<UserMenu>();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Core.Models;
+using RestaurantReservation.Db.Migrations;
 
 namespace RestaurantReservation.Db
 {
@@ -73,6 +74,16 @@ namespace RestaurantReservation.Db
                 entity.ToView("view_EmployeeDetails");
                 entity.HasNoKey();
             });
+
+            // Configure the CalcTotalRevenue function 
+            modelBuilder.HasDbFunction(() => CalcTotalRevenue(default))
+                        .HasName("CalcTotalRevenue")
+                        .HasSchema("dbo");
+        }
+
+        public decimal CalcTotalRevenue(int restaurantId)
+        {
+            throw new NotSupportedException("This method can only be used using a LINQ query.");
         }
     }
 }

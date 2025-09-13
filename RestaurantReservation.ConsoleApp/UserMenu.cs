@@ -15,6 +15,7 @@ namespace RestaurantReservation.ConsoleApp
         private readonly OrderItemService _orderItemService;
         private readonly CustomerService _customerService;
         private readonly ViewService _viewService;
+        private readonly FunctionService _functionService;
 
         public UserMenu(
             RestaurantService restaurantService,
@@ -25,7 +26,8 @@ namespace RestaurantReservation.ConsoleApp
             OrderService orderService,
             OrderItemService orderItemService,
             CustomerService customerService,
-            ViewService viewService)
+            ViewService viewService,
+            FunctionService functionService)
         {
             _restaurantService = restaurantService;
             _employeeService = employeeService;
@@ -36,6 +38,7 @@ namespace RestaurantReservation.ConsoleApp
             _orderItemService = orderItemService;
             _customerService = customerService;
             _viewService = viewService;
+            _functionService = functionService;
         }
 
         public void ShowMainMenu()
@@ -380,6 +383,7 @@ namespace RestaurantReservation.ConsoleApp
                     InputHelper.Continue();
                     break;
                 case "3":
+                    _functionService.CalculateRestaurantRevenue();
                     InputHelper.Continue();
                     break;
                 case "4":
