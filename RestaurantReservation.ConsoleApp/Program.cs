@@ -2,6 +2,7 @@
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Repositories;
 using RestaurantReservation.Services;
+using RestaurantReservation.Services.MainServices;
 
 namespace RestaurantReservation.ConsoleApp
 {
@@ -41,6 +42,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<OrderRepository>();
             services.AddScoped<ReservationRepository>();
             services.AddScoped<TableRepository>();
+            services.AddScoped<ViewRepository>();
 
             // Register Services
             services.AddScoped<RestaurantService>();
@@ -51,6 +53,7 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<OrderService>();
             services.AddScoped<ReservationService>();
             services.AddScoped<TableService>();
+            services.AddScoped<ViewService>();
 
             // Register Main Menu
             services.AddScoped<UserMenu>();

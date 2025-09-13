@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Core.Models;
 
 namespace RestaurantReservation.Db
@@ -13,6 +14,9 @@ namespace RestaurantReservation.Db
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Table> Tables { get; set; }
+
+        public DbSet<ReservationDetailsDTO> ReservationDetailsView { get; set; }
+        public DbSet<EmployeeDetailsDTO> EmployeeDetailsView { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -55,6 +59,20 @@ namespace RestaurantReservation.Db
                 .WithMany(rt => rt.Reservations)
                 .HasForeignKey(r => r.RestaurantId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Configure reservation details View
+            modelBuilder.Entity<ReservationDetailsDTO>(entity =>
+            {
+                entity.ToView("view_ReservationDetails");
+                entity.HasNoKey();
+            });
+
+            // Configure employees details View
+            modelBuilder.Entity<EmployeeDetailsDTO>(entity =>
+            {
+                entity.ToView("view_EmployeeDetails");
+                entity.HasNoKey();
+            });
         }
     }
 }

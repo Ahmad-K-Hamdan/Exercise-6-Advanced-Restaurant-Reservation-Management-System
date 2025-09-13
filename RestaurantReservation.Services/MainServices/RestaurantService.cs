@@ -4,7 +4,7 @@ using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 using RestaurantReservation.Services.Helpers;
 
-namespace RestaurantReservation.Services
+namespace RestaurantReservation.Services.MainServices
 {
     public class RestaurantService
     {
