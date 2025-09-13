@@ -35,8 +35,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine(res.ToString());
             }
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Add()
@@ -78,9 +76,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error adding reservation: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Delete()
@@ -105,9 +100,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error deleting reservation: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Update()
@@ -142,9 +134,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error updating reservation: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void ListReservationsByCustomer()
@@ -179,9 +168,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error retrieving reservations: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void ListOrdersAndMenuItems()
@@ -216,9 +202,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error retrieving orders and menu items: {ex.Message}");
             }
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
 
         public void ListOrderedMenuItems()
@@ -246,9 +229,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error retrieving menu items: {ex.Message}");
             }
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
 
         private bool IsEmpty()

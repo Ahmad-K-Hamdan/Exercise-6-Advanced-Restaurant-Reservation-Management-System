@@ -5,6 +5,12 @@ namespace RestaurantReservation.Services.Helpers
 {
     public static class InputHelper
     {
+        public static void Continue()
+        {
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
+        }
+
         public static string GetValidInput(string prompt, Func<string, string?> validator)
         {
             while (true)

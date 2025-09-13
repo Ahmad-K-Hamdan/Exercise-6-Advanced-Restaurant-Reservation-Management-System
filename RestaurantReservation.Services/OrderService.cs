@@ -33,8 +33,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine(order.ToString());
             }
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Add()
@@ -71,9 +69,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error adding order: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Delete()
@@ -98,9 +93,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error deleting order: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Update()
@@ -130,9 +122,36 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error managing order: {ex.Message}");
             }
+        }
 
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
+        public void CalculateAverageOrderAmountByEmployee()
+        {
+            Console.WriteLine();
+            try
+            {
+                var employeeId = InputHelper.GetValidEmployeeId(_employeeRepo);
+                var employee = _employeeRepo.GetById(employeeId);
+
+                if (employee == null)
+                {
+                    Console.WriteLine("Employee not found.");
+                    return;
+                }
+
+                var averageOrderAmount = _orderRepo.CalculateAverageOrderAmountByEmployee(employeeId);
+
+                if (averageOrderAmount == 0)
+                {
+                    Console.WriteLine($"No orders found for employee {employee.FirstName} {employee.LastName}.");
+                    return;
+                }
+
+                Console.WriteLine($"Average order amount for employee {employee.FirstName} {employee.LastName} is {averageOrderAmount:C}.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error calculating average order amount: {ex.Message}");
+            }
         }
 
         private bool IsEmpty()

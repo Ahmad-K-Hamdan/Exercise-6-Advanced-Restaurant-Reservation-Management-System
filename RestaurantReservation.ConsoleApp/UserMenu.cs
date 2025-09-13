@@ -1,4 +1,5 @@
 ﻿using RestaurantReservation.Services;
+using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.ConsoleApp
 {
@@ -71,8 +72,8 @@ namespace RestaurantReservation.ConsoleApp
                     case "7":
                         return;
                     default:
-                        Console.WriteLine("Invalid choice. Press any key to try again.");
-                        Console.ReadKey();
+                        Console.WriteLine("Invalid choice.");
+                        InputHelper.Continue();
                         break;
                 }
             }
@@ -97,33 +98,41 @@ namespace RestaurantReservation.ConsoleApp
             {
                 case "1":
                     _restaurantService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "2":
                     _employeeService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "3":
                     _tableService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "4":
                     _reservationService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "5":
                     _menuItemService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "6":
                     _orderService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "7":
                     _orderItemService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "8":
                     _customerService.ViewAll();
+                    InputHelper.Continue();
                     break;
                 case "9":
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid choice.");
+                    InputHelper.Continue();
                     break;
             }
         }
@@ -147,33 +156,41 @@ namespace RestaurantReservation.ConsoleApp
             {
                 case "1":
                     _restaurantService.Add();
+                    InputHelper.Continue();
                     break;
                 case "2":
                     _employeeService.Add();
+                    InputHelper.Continue();
                     break;
                 case "3":
                     _tableService.Add();
+                    InputHelper.Continue();
                     break;
                 case "4":
                     _customerService.Add();
+                    InputHelper.Continue();
                     break;
                 case "5":
                     _menuItemService.Add();
+                    InputHelper.Continue();
                     break;
                 case "6":
                     _reservationService.Add();
+                    InputHelper.Continue();
                     break;
                 case "7":
                     _orderService.Add();
+                    InputHelper.Continue();
                     break;
                 case "8":
                     _orderItemService.Add();
+                    InputHelper.Continue();
                     break;
                 case "9":
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid choice.");
+                    InputHelper.Continue();
                     break;
             }
         }
@@ -197,33 +214,41 @@ namespace RestaurantReservation.ConsoleApp
             {
                 case "1":
                     _restaurantService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "2":
                     _employeeService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "3":
                     _tableService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "4":
                     _customerService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "5":
                     _menuItemService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "6":
                     _reservationService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "7":
                     _orderService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "8":
                     _orderItemService.Delete();
+                    InputHelper.Continue();
                     break;
                 case "9":
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid choice.");
+                    InputHelper.Continue();
                     break;
             }
         }
@@ -247,33 +272,41 @@ namespace RestaurantReservation.ConsoleApp
             {
                 case "1":
                     _restaurantService.Update();
+                    InputHelper.Continue();
                     break;
                 case "2":
                     _employeeService.Update();
+                    InputHelper.Continue();
                     break;
                 case "3":
                     _tableService.Update();
+                    InputHelper.Continue();
                     break;
                 case "4":
                     _customerService.Update();
+                    InputHelper.Continue();
                     break;
                 case "5":
                     _menuItemService.Update();
+                    InputHelper.Continue();
                     break;
                 case "6":
                     _reservationService.Update();
+                    InputHelper.Continue();
                     break;
                 case "7":
                     _orderService.Update();
+                    InputHelper.Continue();
                     break;
                 case "8":
                     _orderItemService.Update();
+                    InputHelper.Continue();
                     break;
                 case "9":
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid choice.");
+                    InputHelper.Continue();
                     break;
             }
         }
@@ -294,24 +327,29 @@ namespace RestaurantReservation.ConsoleApp
             {
                 case "1":
                     _employeeService.ListManagers();
+                    InputHelper.Continue();
                     break;
                 case "2":
                     _reservationService.ListReservationsByCustomer();
+                    InputHelper.Continue();
                     break;
                 case "3":
                     _reservationService.ListOrdersAndMenuItems();
+                    InputHelper.Continue();
                     break;
                 case "4":
                     _reservationService.ListOrderedMenuItems();
+                    InputHelper.Continue();
                     break;
                 case "5":
-                    // _orderService.CalculateAverageOrderAmountByEmployee();
+                    _orderService.CalculateAverageOrderAmountByEmployee();
+                    InputHelper.Continue();
                     break;
                 case "6":
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Press any key to try again.");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid choice.");
+                    InputHelper.Continue();
                     break;
             }
         }

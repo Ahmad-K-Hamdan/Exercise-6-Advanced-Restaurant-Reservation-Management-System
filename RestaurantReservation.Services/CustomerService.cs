@@ -29,8 +29,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine(cust.ToString());
             }
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Add()
@@ -58,9 +56,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error adding customer: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Delete()
@@ -85,9 +80,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error deleting customer: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         public void Update()
@@ -123,9 +115,6 @@ namespace RestaurantReservation.Services
             {
                 Console.WriteLine($"Error managing customer: {ex.Message}");
             }
-
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
         }
 
         private bool IsEmpty()

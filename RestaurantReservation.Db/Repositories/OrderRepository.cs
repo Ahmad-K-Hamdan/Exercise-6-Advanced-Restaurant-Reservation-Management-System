@@ -45,6 +45,16 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Orders.Where(o => o.ReservationId == reservationId).Include(o => o.OrderItems).ToList();
         }
 
+        public decimal CalculateAverageOrderAmountByEmployee(int employeeId)
+        {
+            var orders = _context.Orders.Where(o => o.EmployeeId == employeeId).ToList();
+            if (orders.Count == 0)
+            {
+                return 0;
+            }
+            return orders.Average(o => o.TotalAmount);
+        }
+
         public bool IsEmpty()
         {
             return !_context.Orders.Any();
