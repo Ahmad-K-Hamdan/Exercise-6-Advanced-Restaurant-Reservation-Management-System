@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RestaurantReservation.ConsoleApp.Menus;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Repositories;
 using RestaurantReservation.Services.MainServices;
@@ -24,8 +25,8 @@ namespace RestaurantReservation.ConsoleApp
             }
 
             // Start the program
-            var userMenu = serviceProvider.GetRequiredService<UserMenu>();
-            userMenu.ShowMainMenu();
+            var mainMenu = serviceProvider.GetRequiredService<MainMenu>();
+            mainMenu.Show();
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -59,8 +60,14 @@ namespace RestaurantReservation.ConsoleApp
             services.AddScoped<FunctionService>();
             services.AddScoped<StoredProcedureService>();
 
-            // Register Main Menu
-            services.AddScoped<UserMenu>();
+            // Register All Menus
+            services.AddScoped<MainMenu>();
+            services.AddScoped<ViewDataMenu>();
+            services.AddScoped<AddDataMenu>();
+            services.AddScoped<ManageDataMenu>();
+            services.AddScoped<DeleteDataMenu>();
+            services.AddScoped<QueriesMenu>();
+            services.AddScoped<DatabaseFeaturesMenu>();
         }
 
         private static bool InitializeDatabase(IServiceProvider serviceProvider)

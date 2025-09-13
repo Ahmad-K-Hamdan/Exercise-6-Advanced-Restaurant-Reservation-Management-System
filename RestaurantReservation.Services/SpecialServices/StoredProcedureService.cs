@@ -29,7 +29,7 @@ namespace RestaurantReservation.Services.SpecialServices
                     return;
                 }
 
-                Console.WriteLine($"\nCustomers with Reservations > {partySize} People");
+                Console.WriteLine($"\nCustomers with reservations for more than {partySize} People");
                 foreach (var customer in customers!)
                 {
                     Console.WriteLine(customer.ToString());
