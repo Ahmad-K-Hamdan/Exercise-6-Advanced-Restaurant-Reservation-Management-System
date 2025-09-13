@@ -299,13 +299,13 @@ namespace RestaurantReservation.ConsoleApp
                     _reservationService.ListReservationsByCustomer();
                     break;
                 case "3":
-                    // _orderService.ListOrdersByReservation();
+                    _reservationService.ListOrdersAndMenuItems();
                     break;
                 case "4":
-                    // _orderItemService.ListOrderItemsByReservation();
+                    _reservationService.ListOrderedMenuItems();
                     break;
                 case "5":
-                    // _orderService.CalculateAverageAmountByEmployee();
+                    // _orderService.CalculateAverageOrderAmountByEmployee();
                     break;
                 case "6":
                     return;

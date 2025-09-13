@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core.Models;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -37,6 +38,11 @@ namespace RestaurantReservation.Db.Repositories
         {
             _context.Orders.Remove(order);
             _context.SaveChanges();
+        }
+
+        public List<Order> GetOrdersByReservationId(int reservationId)
+        {
+            return _context.Orders.Where(o => o.ReservationId == reservationId).Include(o => o.OrderItems).ToList();
         }
 
         public bool IsEmpty()

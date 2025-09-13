@@ -169,6 +169,7 @@ namespace RestaurantReservation.Services
                 }
 
                 Console.WriteLine($"\nReservations for {customer.FirstName} {customer.LastName}:");
+
                 foreach (var res in reservations)
                 {
                     Console.WriteLine(res.ToString());
@@ -180,6 +181,73 @@ namespace RestaurantReservation.Services
             }
 
             Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
+        }
+
+        public void ListOrdersAndMenuItems()
+        {
+            Console.WriteLine();
+            try
+            {
+                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
+                var orders = _reservationRepo.ListOrdersAndMenuItems(reservationId);
+
+                if (!orders.Any())
+                {
+                    Console.WriteLine($"\nNo orders found for reservation {reservationId}.");
+                    return;
+                }
+
+                Console.WriteLine($"\nOrders and Menu Items for Reservation {reservationId}:");
+
+                foreach (var order in orders)
+                {
+                    Console.WriteLine($"\nOrder #{order.OrderId}:");
+                    Console.WriteLine($"  Date: {order.OrderDate:yyyy-MM-dd HH:mm}");
+                    Console.WriteLine($"  Total: {order.TotalAmount:C}");
+                    Console.WriteLine("  Items:");
+                    foreach (var orderItem in order.OrderItems)
+                    {
+                        Console.WriteLine($"    - {orderItem.MenuItem.Name} (Qty: {orderItem.Quantity})");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving orders and menu items: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+        }
+
+        public void ListOrderedMenuItems()
+        {
+            Console.WriteLine();
+            try
+            {
+                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
+                var menuItems = _reservationRepo.ListOrderedMenuItems(reservationId);
+
+                if (!menuItems.Any())
+                {
+                    Console.WriteLine($"\nNo menu items found for reservation {reservationId}.");
+                    return;
+                }
+
+                Console.WriteLine($"\nMenu Items for Reservation {reservationId}");
+
+                foreach (var item in menuItems)
+                {
+                    Console.WriteLine($"    - {item}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving menu items: {ex.Message}");
+            }
+
+            Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
         }
 

@@ -1,4 +1,7 @@
-﻿using RestaurantReservation.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core.Models;
+using RestaurantReservation.Core.DTOs;
+
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -42,6 +45,27 @@ namespace RestaurantReservation.Db.Repositories
         public List<Reservation> GetByCustomerId(int CustomerId)
         {
             return _context.Reservations.Where(res => res.CustomerId == CustomerId).ToList();
+        }
+
+        public List<Order> ListOrdersAndMenuItems(int ReservationId)
+        {
+            return _context.Orders.Where(o => o.ReservationId == ReservationId)
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.MenuItem)
+                    .ToList();
+        }
+
+        public List<OrderedMenuItemDTO> ListOrderedMenuItems(int reservationId)
+        {
+            return _context.OrderItems.Where(oi => oi.Order.ReservationId == reservationId)
+                    .Include(oi => oi.MenuItem)
+                    .Include(oi => oi.Order)
+                    .Select(oi => new OrderedMenuItemDTO
+                    {
+                        MenuItemName = oi.MenuItem.Name,
+                        Price = oi.MenuItem.Price,
+                        Quantity = oi.Quantity,
+                    }).ToList();
         }
 
         public bool IsEmpty()
