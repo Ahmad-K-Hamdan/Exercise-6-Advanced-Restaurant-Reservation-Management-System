@@ -18,111 +18,84 @@ namespace RestaurantReservation.Services.MainServices
             _menuItemRepo = menuItemRepo;
         }
 
-        public void ViewAll()
+        public List<OrderItem> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo order items found.");
-                return;
-            }
-
-            var orderItems = _orderItemRepo.GetAll();
-            Console.WriteLine("\nAll Order Items:");
-            foreach (var oi in orderItems)
-            {
-                Console.WriteLine(oi.ToString());
-            }
+            return _orderItemRepo.GetAll();
         }
 
-        public void Add()
+        public OrderItem Add(int orderId, int menuItemId, int quantity)
         {
-            Console.WriteLine();
-            try
+            var order = GetOrderById(orderId);
+            var menuItem = GetMenuItemById(menuItemId);
+
+            var quantityValidation = OrderItemValidator.ValidateQuantity(quantity.ToString());
+            if (quantityValidation != null)
             {
-                var orderId = InputHelper.GetValidOrderId(_orderRepo);
-                var order = _orderRepo.GetById(orderId);
-
-                var menuItemId = InputHelper.GetValidMenuItemId(_menuItemRepo);
-                var menuItem = _menuItemRepo.GetById(menuItemId);
-
-                var quantityInput = InputHelper.GetValidInput(ValidationMessages.EnterQuantity, OrderItemValidator.ValidateQuantity);
-                var quantity = int.Parse(quantityInput);
-
-                var newOrderItem = new OrderItem
-                {
-                    OrderId = orderId,
-                    ItemId = menuItemId,
-                    Quantity = quantity,
-                    Order = order!,
-                    MenuItem = menuItem!
-                };
-
-                _orderItemRepo.Add(newOrderItem);
-                Console.WriteLine($"Order item with quantity {quantity} added successfully!");
+                throw new ArgumentException(quantityValidation);
             }
-            catch (Exception ex)
+
+            var newOrderItem = new OrderItem
             {
-                Console.WriteLine($"Error adding order item: {ex.Message}");
-            }
+                OrderId = orderId,
+                ItemId = menuItemId,
+                Quantity = quantity,
+                Order = order,
+                MenuItem = menuItem
+            };
+
+            _orderItemRepo.Add(newOrderItem);
+            return newOrderItem;
         }
 
-        public void Delete()
+        public void Delete(int orderItemId)
         {
-            Console.WriteLine();
-            try
-            {
-                var orderItemId = InputHelper.GetValidOrderItemId(_orderItemRepo);
-                var orderItem = _orderItemRepo.GetById(orderItemId);
-
-                if (orderItem == null)
-                {
-                    Console.WriteLine($"Order item with ID {orderItemId} not found.");
-                }
-                else
-                {
-                    _orderItemRepo.Delete(orderItem);
-                    Console.WriteLine($"Order item with ID {orderItemId} deleted successfully!");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting order item: {ex.Message}");
-            }
+            var orderItem = GetOrderItemById(orderItemId);
+            _orderItemRepo.Delete(orderItem);
         }
 
-        public void Update()
+        public OrderItem Update(int orderItemId, int quantity)
         {
-            Console.WriteLine();
-            try
+            var orderItem = GetOrderItemById(orderItemId);
+
+            var quantityValidation = OrderItemValidator.ValidateQuantity(quantity.ToString());
+            if (quantityValidation != null)
             {
-                var orderItemId = InputHelper.GetValidOrderItemId(_orderItemRepo);
-                var orderItem = _orderItemRepo.GetById(orderItemId);
-
-                if (orderItem == null)
-                {
-                    Console.WriteLine($"Order item with ID {orderItemId} not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Order Item: {orderItem}");
-
-                var quantityInput = InputHelper.GetValidInput(ValidationMessages.EnterQuantity, OrderItemValidator.ValidateQuantity);
-                var quantity = int.Parse(quantityInput);
-
-                orderItem.Quantity = quantity;
-
-                _orderItemRepo.Update(orderItem);
-                Console.WriteLine($"Order item with ID {orderItemId} updated successfully.");
+                throw new ArgumentException(quantityValidation);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error managing order item: {ex.Message}");
-            }
+
+            orderItem.Quantity = quantity;
+            _orderItemRepo.Update(orderItem);
+            return orderItem;
         }
 
-        private bool IsEmpty()
+        private OrderItem GetOrderItemById(int orderItemId)
         {
-            return _orderItemRepo.IsEmpty();
+            var orderItem = _orderItemRepo.GetById(orderItemId);
+            if (orderItem == null)
+            {
+                throw new InvalidOperationException($"Order item with ID {orderItemId} not found.");
+            }
+            return orderItem;
+        }
+
+        private Order GetOrderById(int orderId)
+        {
+            var order = _orderRepo.GetById(orderId);
+            if (order == null)
+            {
+                throw new InvalidOperationException($"Order with ID {orderId} not found.");
+            }
+            return order;
+        }
+
+        private MenuItem GetMenuItemById(int menuItemId)
+        {
+            var menuItem = _menuItemRepo.GetById(menuItemId);
+            if (menuItem == null)
+            {
+                throw new InvalidOperationException($"Menu item with ID {menuItemId} not found.");
+            }
+            return menuItem;
         }
     }
 }

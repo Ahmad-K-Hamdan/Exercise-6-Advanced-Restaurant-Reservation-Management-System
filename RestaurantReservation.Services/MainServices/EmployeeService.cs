@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
@@ -16,135 +15,101 @@ namespace RestaurantReservation.Services.MainServices
             _restaurantRepo = restaurantRepo;
         }
 
-        public void ViewAll()
+        public List<Employee> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo employees found.");
-                return;
-            }
-
-            var employees = _employeeRepo.GetAll();
-            Console.WriteLine("\nAll Employees:");
-            foreach (var emp in employees)
-            {
-                Console.WriteLine(emp.ToString());
-            }
+            return _employeeRepo.GetAll();
         }
 
-        public void Add()
+        public Employee Add(int restaurantId, string firstName, string lastName, string position)
         {
-            Console.WriteLine();
-            try
+            var restaurant = GetRestaurantById(restaurantId);
+
+            var empFirstName = EmployeeValidator.ValidateFirstName(firstName);
+            if (empFirstName != null)
             {
-                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
-                var restaurant = _restaurantRepo.GetById(restaurantId);
-
-                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, EmployeeValidator.ValidateFirstName);
-                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, EmployeeValidator.ValidateLastName);
-                var position = InputHelper.GetValidInput(ValidationMessages.EnterPosition, EmployeeValidator.ValidatePosition);
-
-                var newEmployee = new Employee
-                {
-                    RestaurantId = restaurantId,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Position = position,
-                    Restaurant = restaurant!
-                };
-
-                _employeeRepo.Add(newEmployee);
-                Console.WriteLine($"Employee '{firstName} {lastName}' added successfully!");
+                throw new ArgumentException(empFirstName);
             }
-            catch (Exception ex)
+            var empLastName = EmployeeValidator.ValidateLastName(lastName);
+            if (empLastName != null)
             {
-                Console.WriteLine($"Error adding employee: {ex.Message}");
+                throw new ArgumentException(empLastName);
             }
+            var empPosition = EmployeeValidator.ValidatePosition(position);
+            if (empPosition != null)
+            {
+                throw new ArgumentException(empPosition);
+            }
+
+            var newEmployee = new Employee
+            {
+                RestaurantId = restaurantId,
+                FirstName = firstName,
+                LastName = lastName,
+                Position = position,
+                Restaurant = restaurant
+            };
+
+            _employeeRepo.Add(newEmployee);
+            return newEmployee;
         }
 
-        public void Delete()
+        public void Delete(int employeeId)
         {
-            Console.WriteLine();
-            try
-            {
-                var employeeId = InputHelper.GetValidEmployeeId(_employeeRepo);
-                var employee = _employeeRepo.GetById(employeeId);
-
-                if (employee == null)
-                {
-                    Console.WriteLine("Employee not found.");
-                    return;
-                }
-
-                _employeeRepo.Delete(employee);
-                Console.WriteLine($"Employee with ID {employeeId} deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting employee: {ex.Message}");
-            }
+            var employee = GetEmployeeById(employeeId);
+            _employeeRepo.Delete(employee);
         }
 
-        public void Update()
+        public Employee Update(int employeeId, string firstName, string lastName, string position)
         {
-            Console.WriteLine();
-            try
+            var employee = GetEmployeeById(employeeId);
+
+            var empFirstName = EmployeeValidator.ValidateFirstName(firstName);
+            if (empFirstName != null)
             {
-                var employeeId = InputHelper.GetValidEmployeeId(_employeeRepo);
-                var employee = _employeeRepo.GetById(employeeId);
-
-                if (employee == null)
-                {
-                    Console.WriteLine("Employee not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Employee: {employee}");
-
-                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, EmployeeValidator.ValidateFirstName);
-                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, EmployeeValidator.ValidateLastName);
-                var position = InputHelper.GetValidInput(ValidationMessages.EnterPosition, EmployeeValidator.ValidatePosition);
-
-                employee.FirstName = firstName;
-                employee.LastName = lastName;
-                employee.Position = position;
-
-                _employeeRepo.Update(employee);
-                Console.WriteLine($"Employee with ID {employeeId} updated successfully.");
+                throw new ArgumentException(empFirstName);
             }
-            catch (Exception ex)
+            var empLastName = EmployeeValidator.ValidateLastName(lastName);
+            if (empLastName != null)
             {
-                Console.WriteLine($"Error managing employee: {ex.Message}");
+                throw new ArgumentException(empLastName);
             }
+            var empPosition = EmployeeValidator.ValidatePosition(position);
+            if (empPosition != null)
+            {
+                throw new ArgumentException(empPosition);
+            }
+
+            employee.FirstName = firstName;
+            employee.LastName = lastName;
+            employee.Position = position;
+
+            _employeeRepo.Update(employee);
+            return employee;
         }
 
-        public void ListManagers()
+        public List<Employee> ListManagers()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo employees found.");
-                return;
-            }
-
-            var managers = _employeeRepo.GetManagers();
-            if (!managers.Any())
-            {
-                Console.WriteLine("\nNo managers found.");
-            }
-            else
-            {
-                Console.WriteLine("\nManagers:");
-                foreach (var manager in managers)
-                {
-                    Console.WriteLine(manager.ToString());
-                }
-            }
+            return _employeeRepo.GetManagers();
         }
 
-
-        private bool IsEmpty()
+        private Employee GetEmployeeById(int employeeId)
         {
-            return _employeeRepo.IsEmpty();
+            var employee = _employeeRepo.GetById(employeeId);
+            if (employee == null)
+            {
+                throw new InvalidOperationException($"Employee with ID {employeeId} not found.");
+            }
+            return employee;
+        }
+
+        private Restaurant GetRestaurantById(int restaurantId)
+        {
+            var restaurant = _restaurantRepo.GetById(restaurantId);
+            if (restaurant == null)
+            {
+                throw new ArgumentException("Restaurant not found.");
+            }
+            return restaurant;
         }
     }
 }

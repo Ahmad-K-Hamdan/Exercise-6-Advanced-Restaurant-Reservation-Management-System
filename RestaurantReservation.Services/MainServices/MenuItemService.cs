@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
@@ -16,115 +15,96 @@ namespace RestaurantReservation.Services.MainServices
             _restaurantRepo = restaurantRepo;
         }
 
-        public void ViewAll()
+        public List<MenuItem> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo menu items found.");
-                return;
-            }
-
-            var items = _menuItemRepo.GetAll();
-            Console.WriteLine("\nAll Menu Items:");
-            foreach (var item in items)
-            {
-                Console.WriteLine(item.ToString());
-            }
+            return _menuItemRepo.GetAll();
         }
 
-        public void Add()
+        public MenuItem Add(int restaurantId, string name, string description, decimal price)
         {
-            Console.WriteLine();
+            var restaurant = GetRestaurantById(restaurantId);
 
-            try
+            var menuItemName = MenuItemValidator.ValidateMenuItemName(name);
+            if (menuItemName != null)
             {
-                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
-                var restaurant = _restaurantRepo.GetById(restaurantId);
-
-                var name = InputHelper.GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
-                var description = InputHelper.GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
-                var priceInput = InputHelper.GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
-                var price = decimal.Parse(priceInput);
-
-                var newMenuItem = new MenuItem
-                {
-                    RestaurantId = restaurantId,
-                    Name = name,
-                    Description = description,
-                    Price = price,
-                    Restaurant = restaurant!
-                };
-
-                _menuItemRepo.Add(newMenuItem);
-                Console.WriteLine($"Menu item '{name}' added successfully!");
+                throw new ArgumentException(menuItemName);
             }
-            catch (Exception ex)
+            var menuItemDescription = MenuItemValidator.ValidateDescription(description);
+            if (menuItemDescription != null)
             {
-                Console.WriteLine($"Error adding menu item: {ex.Message}");
+                throw new ArgumentException(menuItemDescription);
             }
+            var menuItemPrice = MenuItemValidator.ValidatePrice(price.ToString());
+            if (menuItemPrice != null)
+            {
+                throw new ArgumentException(menuItemPrice);
+            }
+
+            var newMenuItem = new MenuItem
+            {
+                RestaurantId = restaurantId,
+                Name = name,
+                Description = description,
+                Price = price,
+                Restaurant = restaurant
+            };
+
+            _menuItemRepo.Add(newMenuItem);
+            return newMenuItem;
         }
 
-        public void Delete()
+        public void Delete(int menuItemId)
         {
-            Console.WriteLine();
-            try
-            {
-                var menuItemId = InputHelper.GetValidMenuItemId(_menuItemRepo);
-                var menuItem = _menuItemRepo.GetById(menuItemId);
-
-                if (menuItem == null)
-                {
-                    Console.WriteLine($"Menu item with ID {menuItemId} not found.");
-                }
-                else
-                {
-                    _menuItemRepo.Delete(menuItem);
-                    Console.WriteLine($"Menu item with ID {menuItemId} deleted successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting menu item: {ex.Message}");
-            }
+            var menuItem = GetMenuItemById(menuItemId);
+            _menuItemRepo.Delete(menuItem);
         }
 
-        public void Update()
+        public MenuItem Update(int menuItemId, string name, string description, decimal price)
         {
-            Console.WriteLine();
-            try
+            var menuItem = GetMenuItemById(menuItemId);
+
+            var menuItemName = MenuItemValidator.ValidateMenuItemName(name);
+            if (menuItemName != null)
             {
-                var menuItemId = InputHelper.GetValidMenuItemId(_menuItemRepo);
-                var menuItem = _menuItemRepo.GetById(menuItemId);
-
-                if (menuItem == null)
-                {
-                    Console.WriteLine($"Menu item with ID {menuItemId} not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Menu Item: {menuItem}");
-
-                var name = InputHelper.GetValidInput(ValidationMessages.EnterMenuItemName, MenuItemValidator.ValidateMenuItemName);
-                var description = InputHelper.GetValidInput(ValidationMessages.EnterDescription, MenuItemValidator.ValidateDescription);
-                var priceInput = InputHelper.GetValidInput(ValidationMessages.EnterPrice, MenuItemValidator.ValidatePrice);
-                var price = decimal.Parse(priceInput);
-
-                menuItem.Name = name;
-                menuItem.Description = description;
-                menuItem.Price = price;
-
-                _menuItemRepo.Update(menuItem);
-                Console.WriteLine($"Menu item with ID {menuItemId} updated successfully.");
+                throw new ArgumentException(menuItemName);
             }
-            catch (Exception ex)
+            var menuItemDescription = MenuItemValidator.ValidateDescription(description);
+            if (menuItemDescription != null)
             {
-                Console.WriteLine($"Error managing menu item: {ex.Message}");
+                throw new ArgumentException(menuItemDescription);
             }
+            var menuItemPrice = MenuItemValidator.ValidatePrice(price.ToString());
+            if (menuItemPrice != null)
+            {
+                throw new ArgumentException(menuItemPrice);
+            }
+
+            menuItem.Name = name;
+            menuItem.Description = description;
+            menuItem.Price = price;
+
+            _menuItemRepo.Update(menuItem);
+            return menuItem;
         }
 
-        private bool IsEmpty()
+        private MenuItem GetMenuItemById(int menuItemId)
         {
-            return _menuItemRepo.IsEmpty();
+            var menuItem = _menuItemRepo.GetById(menuItemId);
+            if (menuItem == null)
+            {
+                throw new InvalidOperationException($"Menu item with ID {menuItemId} not found.");
+            }
+            return menuItem;
+        }
+
+        private Restaurant GetRestaurantById(int restaurantId)
+        {
+            var restaurant = _restaurantRepo.GetById(restaurantId);
+            if (restaurant == null)
+            {
+                throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");
+            }
+            return restaurant;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
@@ -94,7 +93,7 @@ namespace RestaurantReservation.Services.MainServices
             return customer;
         }
 
-        public Customer GetCustomerById(int customerId)
+        private Customer GetCustomerById(int customerId)
         {
             var customer = _customerRepo.GetById(customerId);
             if (customer == null)

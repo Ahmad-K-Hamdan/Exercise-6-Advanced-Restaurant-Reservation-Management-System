@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
@@ -16,107 +15,73 @@ namespace RestaurantReservation.Services.MainServices
             _restaurantRepo = restaurantRepo;
         }
 
-        public void ViewAll()
+        public List<Table> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo tables found.");
-                return;
-            }
-
-            var tables = _tableRepo.GetAll();
-            Console.WriteLine("\nAll Tables:");
-            foreach (var tbl in tables)
-            {
-                Console.WriteLine(tbl.ToString());
-            }
+            return _tableRepo.GetAll();
         }
 
-        public void Add()
+        public Table Add(int restaurantId, int capacity)
         {
-            Console.WriteLine();
-            try
+            var restaurant = GetRestaurantById(restaurantId);
+
+            var tableCapacity = TableValidator.ValidateCapacity(capacity.ToString());
+            if (tableCapacity != null)
             {
-                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
-                var restaurant = _restaurantRepo.GetById(restaurantId);
-
-                var capacityInput = InputHelper.GetValidInput(ValidationMessages.EnterTableCapacity, TableValidator.ValidateCapacity);
-                var capacity = int.Parse(capacityInput);
-
-                var newTable = new Table
-                {
-                    RestaurantId = restaurantId,
-                    Capacity = capacity,
-                    Restaurant = restaurant!
-                };
-
-                _tableRepo.Add(newTable);
-                Console.WriteLine($"Table with capacity {capacity} added successfully!");
+                throw new ArgumentException(tableCapacity);
             }
-            catch (Exception ex)
+
+            var newTable = new Table
             {
-                Console.WriteLine($"Error adding table: {ex.Message}");
-            }
+                RestaurantId = restaurantId,
+                Capacity = capacity,
+                Restaurant = restaurant
+            };
+
+            _tableRepo.Add(newTable);
+            return newTable;
         }
 
-        public void Delete()
+        public void Delete(int tableId)
         {
-            Console.WriteLine();
-            try
-            {
-                var tableId = InputHelper.GetValidTableId(_tableRepo);
-                var table = _tableRepo.GetById(tableId);
-                if (table == null)
-                {
-                    Console.WriteLine("Table not found.");
-                }
-                else
-                {
-                    _tableRepo.Delete(table);
-                    Console.WriteLine($"Table with ID {tableId} deleted successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting table: {ex.Message}");
-            }
+            var table = GetTableById(tableId);
+            _tableRepo.Delete(table);
         }
 
-        public void Update()
+        public Table Update(int tableId, int restaurantId, int capacity)
         {
-            Console.WriteLine();
-            try
+            var table = GetTableById(tableId);
+
+            var tableCapacity = TableValidator.ValidateCapacity(capacity.ToString());
+            if (tableCapacity != null)
             {
-                var tableId = InputHelper.GetValidTableId(_tableRepo);
-                var table = _tableRepo.GetById(tableId);
-
-                if (table == null)
-                {
-                    Console.WriteLine($"Table with ID {tableId} not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Table: {table}");
-
-                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
-                var capacityInput = InputHelper.GetValidInput(ValidationMessages.EnterTableCapacity, TableValidator.ValidateCapacity);
-                var capacity = int.Parse(capacityInput);
-
-                table.RestaurantId = restaurantId;
-                table.Capacity = capacity;
-
-                _tableRepo.Update(table);
-                Console.WriteLine($"Table with ID {tableId} updated successfully.");
+                throw new ArgumentException(tableCapacity);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error updating table: {ex.Message}");
-            }
+
+            table.RestaurantId = restaurantId;
+            table.Capacity = capacity;
+
+            _tableRepo.Update(table);
+            return table;
         }
 
-        private bool IsEmpty()
+        private Table GetTableById(int tableId)
         {
-            return _tableRepo.IsEmpty();
+            var table = _tableRepo.GetById(tableId);
+            if (table == null)
+            {
+                throw new InvalidOperationException($"Table with ID {tableId} not found.");
+            }
+            return table;
+        }
+
+        private Restaurant GetRestaurantById(int restaurantId)
+        {
+            var restaurant = _restaurantRepo.GetById(restaurantId);
+            if (restaurant == null)
+            {
+                throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");
+            }
+            return restaurant;
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Core.DTOs;
 
 namespace RestaurantReservation.Services.MainServices
 {
@@ -20,219 +20,125 @@ namespace RestaurantReservation.Services.MainServices
             _tableRepo = tableRepo;
         }
 
-        public void ViewAll()
+        public List<Reservation> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo reservations found.");
-                return;
-            }
-
-            var reservations = _reservationRepo.GetAll();
-            Console.WriteLine("\nAll Reservations:");
-            foreach (var res in reservations)
-            {
-                Console.WriteLine(res.ToString());
-            }
+            return _reservationRepo.GetAll();
         }
 
-        public void Add()
+        public Reservation Add(int customerId, int restaurantId, int tableId, DateTime reservationDate, int partySize)
         {
-            Console.WriteLine();
-            try
+            var customer = GetCustomerById(customerId);
+            var restaurant = GetRestaurantById(restaurantId);
+            var table = GetTableById(tableId);
+
+            var reservationDateValidation = ReservationValidator.ValidateReservationDate(reservationDate.ToString("yyyy-MM-dd HH:mm"));
+            if (reservationDateValidation != null)
             {
-                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
-                var customer = _customerRepo.GetById(customerId);
-
-                var restaurantId = InputHelper.GetValidRestaurantId(_restaurantRepo);
-                var restaurant = _restaurantRepo.GetById(restaurantId);
-
-                var tableId = InputHelper.GetValidTableId(_tableRepo);
-                var table = _tableRepo.GetById(tableId);
-
-                var reservationDateInput = InputHelper.GetValidInput(ValidationMessages.EnterReservationDate, ReservationValidator.ValidateReservationDate);
-                var reservationDate = DateTime.Parse(reservationDateInput);
-
-                var partySizeInput = InputHelper.GetValidInput(ValidationMessages.EnterPartySize, ReservationValidator.ValidatePartySize);
-                var partySize = int.Parse(partySizeInput);
-
-                var newReservation = new Reservation
-                {
-                    CustomerId = customerId,
-                    RestaurantId = restaurantId,
-                    TableId = tableId,
-                    ReservationDate = reservationDate,
-                    PartySize = partySize,
-                    Customer = customer!,
-                    Restaurant = restaurant!,
-                    Table = table!
-                };
-
-                _reservationRepo.Add(newReservation);
-                Console.WriteLine($"Reservation for {partySize} people added successfully!");
+                throw new ArgumentException(reservationDateValidation);
             }
-            catch (Exception ex)
+            var partySizeValidation = ReservationValidator.ValidatePartySize(partySize.ToString());
+            if (partySizeValidation != null)
             {
-                Console.WriteLine($"Error adding reservation: {ex.Message}");
+                throw new ArgumentException(partySizeValidation);
             }
+
+            var newReservation = new Reservation
+            {
+                CustomerId = customerId,
+                RestaurantId = restaurantId,
+                TableId = tableId,
+                ReservationDate = reservationDate,
+                PartySize = partySize,
+                Customer = customer,
+                Restaurant = restaurant,
+                Table = table
+            };
+
+            _reservationRepo.Add(newReservation);
+            return newReservation;
         }
 
-        public void Delete()
+        public void Delete(int reservationId)
         {
-            Console.WriteLine();
-            try
-            {
-                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
-                var reservation = _reservationRepo.GetById(reservationId);
-
-                if (reservation == null)
-                {
-                    Console.WriteLine("Reservation not found.");
-                }
-                else
-                {
-                    _reservationRepo.Delete(reservation);
-                    Console.WriteLine($"Reservation with ID {reservationId} deleted successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting reservation: {ex.Message}");
-            }
+            var reservation = GetReservationById(reservationId);
+            _reservationRepo.Delete(reservation);
         }
 
-        public void Update()
+        public Reservation Update(int reservationId, DateTime reservationDate, int partySize)
         {
-            Console.WriteLine();
-            try
+            var reservation = GetReservationById(reservationId);
+
+            var reservationDateValidation = ReservationValidator.ValidateReservationDate(reservationDate.ToString("yyyy-MM-dd HH:mm"));
+            if (reservationDateValidation != null)
             {
-                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
-                var reservation = _reservationRepo.GetById(reservationId);
-
-                if (reservation == null)
-                {
-                    Console.WriteLine("Reservation not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Reservation: {reservation}");
-
-                var reservationDateInput = InputHelper.GetValidInput(ValidationMessages.EnterReservationDate, ReservationValidator.ValidateReservationDate);
-                var reservationDate = DateTime.Parse(reservationDateInput);
-
-                var partySizeInput = InputHelper.GetValidInput(ValidationMessages.EnterPartySize, ReservationValidator.ValidatePartySize);
-                var partySize = int.Parse(partySizeInput);
-
-                reservation.ReservationDate = reservationDate;
-                reservation.PartySize = partySize;
-
-                _reservationRepo.Update(reservation);
-                Console.WriteLine($"Reservation with ID {reservationId} updated successfully!");
+                throw new ArgumentException(reservationDateValidation);
             }
-            catch (Exception ex)
+            var partySizeValidation = ReservationValidator.ValidatePartySize(partySize.ToString());
+            if (partySizeValidation != null)
             {
-                Console.WriteLine($"Error updating reservation: {ex.Message}");
+                throw new ArgumentException(partySizeValidation);
             }
+
+            reservation.ReservationDate = reservationDate;
+            reservation.PartySize = partySize;
+
+            _reservationRepo.Update(reservation);
+            return reservation;
         }
 
-        public void ListReservationsByCustomer()
+        public List<Reservation> ListReservationsByCustomer(int customerId)
         {
-            Console.WriteLine();
-            try
-            {
-                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
-                var customer = _customerRepo.GetById(customerId);
-
-                if (customer == null)
-                {
-                    Console.WriteLine("Customer not found.");
-                    return;
-                }
-
-                var reservations = _reservationRepo.GetByCustomerId(customerId);
-                if (reservations.Count == 0)
-                {
-                    Console.WriteLine($"No reservations found for customer {customer.FirstName} {customer.LastName}.");
-                    return;
-                }
-
-                Console.WriteLine($"\nReservations for {customer.FirstName} {customer.LastName}:");
-
-                foreach (var res in reservations)
-                {
-                    Console.WriteLine(res.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving reservations: {ex.Message}");
-            }
+            return _reservationRepo.GetByCustomerId(customerId);
         }
 
-        public void ListOrdersAndMenuItems()
+        public List<Order> ListOrdersAndMenuItems(int reservationId)
         {
-            Console.WriteLine();
-            try
-            {
-                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
-                var orders = _reservationRepo.ListOrdersAndMenuItems(reservationId);
-
-                if (!orders.Any())
-                {
-                    Console.WriteLine($"\nNo orders found for reservation {reservationId}.");
-                    return;
-                }
-
-                Console.WriteLine($"\nOrders and Menu Items for Reservation {reservationId}:");
-
-                foreach (var order in orders)
-                {
-                    Console.WriteLine($"\nOrder #{order.OrderId}:");
-                    Console.WriteLine($"  Date: {order.OrderDate:yyyy-MM-dd HH:mm}");
-                    Console.WriteLine($"  Total: {order.TotalAmount:C}");
-                    Console.WriteLine("  Items:");
-                    foreach (var orderItem in order.OrderItems)
-                    {
-                        Console.WriteLine($"    - {orderItem.MenuItem.Name} (Qty: {orderItem.Quantity})");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving orders and menu items: {ex.Message}");
-            }
+            return _reservationRepo.ListOrdersAndMenuItems(reservationId);
         }
 
-        public void ListOrderedMenuItems()
+        public List<OrderedMenuItemDTO> ListOrderedMenuItems(int reservationId)
         {
-            Console.WriteLine();
-            try
-            {
-                var reservationId = InputHelper.GetValidReservationId(_reservationRepo);
-                var menuItems = _reservationRepo.ListOrderedMenuItems(reservationId);
-
-                if (!menuItems.Any())
-                {
-                    Console.WriteLine($"\nNo menu items found for reservation {reservationId}.");
-                    return;
-                }
-
-                Console.WriteLine($"\nMenu Items for Reservation {reservationId}");
-
-                foreach (var item in menuItems)
-                {
-                    Console.WriteLine($"    - {item}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving menu items: {ex.Message}");
-            }
+            return _reservationRepo.ListOrderedMenuItems(reservationId);
         }
 
-        private bool IsEmpty()
+        private Reservation GetReservationById(int reservationId)
         {
-            return _reservationRepo.IsEmpty();
+            var reservation = _reservationRepo.GetById(reservationId);
+            if (reservation == null)
+            {
+                throw new InvalidOperationException($"Reservation with ID {reservationId} not found.");
+            }
+            return reservation;
+        }
+
+        private Customer GetCustomerById(int customerId)
+        {
+            var customer = _customerRepo.GetById(customerId);
+            if (customer == null)
+            {
+                throw new InvalidOperationException($"Customer with ID {customerId} not found.");
+            }
+            return customer;
+        }
+
+        private Restaurant GetRestaurantById(int restaurantId)
+        {
+            var restaurant = _restaurantRepo.GetById(restaurantId);
+            if (restaurant == null)
+            {
+                throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");
+            }
+            return restaurant;
+        }
+
+        private Table GetTableById(int tableId)
+        {
+            var table = _tableRepo.GetById(tableId);
+            if (table == null)
+            {
+                throw new InvalidOperationException($"Table with ID {tableId} not found.");
+            }
+            return table;
         }
     }
 }
