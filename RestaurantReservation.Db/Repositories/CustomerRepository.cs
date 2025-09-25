@@ -38,10 +38,10 @@ namespace RestaurantReservation.Db.Repositories
             return customer;
         }
 
-        public void Delete(Customer customer)
+        public async Task DeleteAsync(Customer customer)
         {
             _context.Customers.Remove(customer);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public List<CustomerDetailsDTO> FindCustomersByPartySize(int minPartySize)

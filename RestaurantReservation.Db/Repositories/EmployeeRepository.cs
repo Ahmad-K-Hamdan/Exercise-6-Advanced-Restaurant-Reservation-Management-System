@@ -38,10 +38,10 @@ namespace RestaurantReservation.Db.Repositories
             return employee;
         }
 
-        public void Delete(Employee employee)
+        public async Task DeleteAsync(Employee employee)
         {
             _context.Employees.Remove(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public List<Employee> GetManagers()

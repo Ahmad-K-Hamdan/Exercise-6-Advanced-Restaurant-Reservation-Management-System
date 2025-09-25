@@ -37,10 +37,10 @@ namespace RestaurantReservation.Db.Repositories
             return table;
         }
 
-        public void Delete(Table table)
+        public async Task DeleteAsync(Table table)
         {
             _context.Tables.Remove(table);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

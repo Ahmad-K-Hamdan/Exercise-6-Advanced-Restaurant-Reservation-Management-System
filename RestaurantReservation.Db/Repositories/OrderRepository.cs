@@ -37,10 +37,10 @@ namespace RestaurantReservation.Db.Repositories
             return order;
         }
 
-        public void Delete(Order order)
+        public async Task DeleteAsync(Order order)
         {
             _context.Orders.Remove(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public List<Order> GetOrdersByReservationId(int reservationId)
