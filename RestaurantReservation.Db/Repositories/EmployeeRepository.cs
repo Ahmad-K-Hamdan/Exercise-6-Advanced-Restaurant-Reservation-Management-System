@@ -31,7 +31,7 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.Employees.FirstOrDefaultAsync(emp => emp.EmployeeId == EmployeeId);
         }
 
-        public async Task<Employee> Update(Employee employee)
+        public async Task<Employee> UpdateAsync(Employee employee)
         {
             _context.Employees.Update(employee);
             await _context.SaveChangesAsync();

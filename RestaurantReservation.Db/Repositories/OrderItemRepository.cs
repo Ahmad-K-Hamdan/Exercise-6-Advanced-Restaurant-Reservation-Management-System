@@ -30,7 +30,7 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.OrderItems.FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId);
         }
 
-        public async Task<OrderItem> Update(OrderItem orderItem)
+        public async Task<OrderItem> UpdateAsync(OrderItem orderItem)
         {
             _context.OrderItems.Update(orderItem);
             await _context.SaveChangesAsync();
