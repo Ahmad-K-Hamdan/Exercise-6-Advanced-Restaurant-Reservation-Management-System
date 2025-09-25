@@ -67,7 +67,7 @@ namespace RestaurantReservation.Services
         public async Task<decimal> CalculateAverageOrderAmountByEmployeeAsync(int employeeId)
         {
             var employee = await GetEmployeeByIdAsync(employeeId);
-            return await _orderRepo.CalculateAverageOrderAmountByEmployee(employeeId);
+            return await _orderRepo.CalculateAverageOrderAmountByEmployeeAsync(employeeId);
         }
 
         private async Task<Order> GetOrderByIdAsync(int orderId)

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using RestaurantReservation.Core.Constants;
 
 namespace RestaurantReservation.Core.Validation
@@ -21,6 +22,11 @@ namespace RestaurantReservation.Core.Validation
                 return ValidationMessages.NameTooLong;
             }
 
+            if (!Regex.IsMatch(firstName, @"^[a-zA-Z]+$"))
+            {
+                return ValidationMessages.NameInvalidCharacters;
+            }
+
             return null;
         }
 
@@ -39,6 +45,11 @@ namespace RestaurantReservation.Core.Validation
             if (lastName.Length > 50)
             {
                 return ValidationMessages.NameTooLong;
+            }
+
+            if (!Regex.IsMatch(lastName, @"^[a-zA-Z]+$"))
+            {
+                return ValidationMessages.NameInvalidCharacters;
             }
 
             return null;

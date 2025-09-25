@@ -44,10 +44,10 @@ namespace RestaurantReservation.Services
 
             var newCustomer = new Customer
             {
-                FirstName = cusFirstName!,
-                LastName = cusLastName!,
-                Email = cusEmail!,
-                PhoneNumber = cusPhoneNumber!
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PhoneNumber = phoneNumber
             };
 
             return await _customerRepo.AddAsync(newCustomer);
@@ -99,7 +99,7 @@ namespace RestaurantReservation.Services
             {
                 throw new ArgumentException(partySizeValidation);
             }
-            return await _customerRepo.FindCustomersByPartySize(minPartySize);
+            return await _customerRepo.FindCustomersByPartySizeAsync(minPartySize);
         }
 
         private async Task<Customer> GetCustomerByIdAsync(int customerId)

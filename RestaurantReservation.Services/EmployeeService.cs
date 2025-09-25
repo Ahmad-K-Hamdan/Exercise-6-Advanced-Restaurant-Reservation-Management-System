@@ -88,12 +88,12 @@ namespace RestaurantReservation.Services
 
         public async Task<List<Employee>> ListManagersAsync()
         {
-            return await _employeeRepo.GetManagers();
+            return await _employeeRepo.GetManagersAsync();
         }
 
         public async Task<List<EmployeeDetailsDTO>> GetEmployeeDetailsAsync()
         {
-            return await _employeeRepo.GetEmployeeDetails();
+            return await _employeeRepo.GetEmployeeDetailsAsync();
         }
 
         private async Task<Employee> GetEmployeeByIdAsync(int employeeId)
