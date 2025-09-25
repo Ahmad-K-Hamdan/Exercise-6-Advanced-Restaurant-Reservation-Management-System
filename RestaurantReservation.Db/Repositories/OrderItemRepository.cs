@@ -17,10 +17,11 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.OrderItems.ToListAsync();
         }
 
-        public void Add(OrderItem orderItem)
+        public async Task<OrderItem> AddAsync(OrderItem orderItem)
         {
             _context.OrderItems.Add(orderItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return orderItem;
         }
 
         public OrderItem? GetById(int orderItemId)

@@ -18,10 +18,11 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.Employees.ToListAsync();
         }
 
-        public void Add(Employee employee)
+        public async Task<Employee> AddAsync(Employee employee)
         {
             _context.Employees.Add(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return employee;
         }
 
         public Employee? GetById(int EmployeeId)
