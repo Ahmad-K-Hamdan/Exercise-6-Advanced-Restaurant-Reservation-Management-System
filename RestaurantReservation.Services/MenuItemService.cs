@@ -1,13 +1,15 @@
 ﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Db.Repositories.Interfaces;
+using RestaurantReservation.Services.Interfaces;
 
 namespace RestaurantReservation.Services
 {
-    public class MenuItemService
+    public class MenuItemService : IMenuItemService
     {
-        private readonly MenuItemRepository _menuItemRepo;
-        private readonly RestaurantRepository _restaurantRepo;
+        private readonly IMenuItemRepository _menuItemRepo;
+        private readonly IRestaurantRepository _restaurantRepo;
 
         public MenuItemService(MenuItemRepository menuItemRepo, RestaurantRepository restaurantRepo)
         {

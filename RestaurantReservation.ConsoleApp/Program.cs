@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Db.Repositories.Interfaces;
 using RestaurantReservation.Services;
+using RestaurantReservation.Services.Interfaces;
 
 namespace RestaurantReservation.ConsoleApp
 {
@@ -28,25 +30,25 @@ namespace RestaurantReservation.ConsoleApp
             // Register DbContext
             services.AddDbContext<RestaurantReservationDbContext>();
 
-            // Register Repositories 
-            services.AddScoped<RestaurantRepository>();
-            services.AddScoped<CustomerRepository>();
-            services.AddScoped<EmployeeRepository>();
-            services.AddScoped<MenuItemRepository>();
-            services.AddScoped<OrderItemRepository>();
-            services.AddScoped<OrderRepository>();
-            services.AddScoped<ReservationRepository>();
-            services.AddScoped<TableRepository>();
+            // Register Repository Interfaces with their Implementations
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            services.AddScoped<ITableRepository, TableRepository>();
 
-            // Register Services
-            services.AddScoped<RestaurantService>();
-            services.AddScoped<CustomerService>();
-            services.AddScoped<EmployeeService>();
-            services.AddScoped<MenuItemService>();
-            services.AddScoped<OrderItemService>();
-            services.AddScoped<OrderService>();
-            services.AddScoped<ReservationService>();
-            services.AddScoped<TableService>();
+            // Register Service Interfaces with their Implementations
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IMenuItemService, MenuItemService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ITableService, TableService>();
         }
 
         private static bool InitializeDatabase(IServiceProvider serviceProvider)
