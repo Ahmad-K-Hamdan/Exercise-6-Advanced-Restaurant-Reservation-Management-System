@@ -2,7 +2,7 @@
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
-namespace RestaurantReservation.Services.MainServices
+namespace RestaurantReservation.Services
 {
     public class RestaurantService
     {

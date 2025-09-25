@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RestaurantReservation.Db;
 using RestaurantReservation.Db.Repositories;
-using RestaurantReservation.Services.MainServices;
+using RestaurantReservation.Services;
 
 namespace RestaurantReservation.ConsoleApp
 {

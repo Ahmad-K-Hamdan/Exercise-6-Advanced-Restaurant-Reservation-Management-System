@@ -3,7 +3,7 @@ using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 using RestaurantReservation.Core.DTOs;
 
-namespace RestaurantReservation.Services.MainServices
+namespace RestaurantReservation.Services
 {
     public class CustomerService
     {
