@@ -43,14 +43,14 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public List<Order> GetOrdersByReservationId(int reservationId)
+        public async Task<List<Order>> GetOrdersByReservationId(int reservationId)
         {
-            return _context.Orders.Where(o => o.ReservationId == reservationId).Include(o => o.OrderItems).ToList();
+            return await _context.Orders.Where(o => o.ReservationId == reservationId).Include(o => o.OrderItems).ToListAsync();
         }
 
-        public decimal CalculateAverageOrderAmountByEmployee(int employeeId)
+        public async Task<decimal> CalculateAverageOrderAmountByEmployee(int employeeId)
         {
-            var orders = _context.Orders.Where(o => o.EmployeeId == employeeId).ToList();
+            var orders = await _context.Orders.Where(o => o.EmployeeId == employeeId).ToListAsync();
             if (orders.Count == 0)
             {
                 return 0;

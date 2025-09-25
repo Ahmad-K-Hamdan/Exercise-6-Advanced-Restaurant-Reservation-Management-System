@@ -44,13 +44,13 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public decimal GetRestaurantRevenue(int restaurantId)
+        public async Task<decimal> GetRestaurantRevenue(int restaurantId)
         {
             try
             {
-                var revenue = _context.Database
+                var revenue = await _context.Database
                     .SqlQuery<decimal>($"SELECT dbo.CalcTotalRevenue({restaurantId}) AS Value")
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
                 return revenue;
             }
             catch (Exception)

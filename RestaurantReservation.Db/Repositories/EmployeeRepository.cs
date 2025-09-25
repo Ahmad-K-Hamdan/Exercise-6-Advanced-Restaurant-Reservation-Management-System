@@ -44,14 +44,14 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public List<Employee> GetManagers()
+        public async Task<List<Employee>> GetManagers()
         {
-            return _context.Employees.Where(emp => emp.Position == "Manager").ToList();
+            return await _context.Employees.Where(emp => emp.Position == "Manager").ToListAsync();
         }
 
-        public List<EmployeeDetailsDTO> GetEmployeeDetails()
+        public async Task<List<EmployeeDetailsDTO>> GetEmployeeDetails()
         {
-            return _context.EmployeeDetailsView.ToList();
+            return await _context.EmployeeDetailsView.ToListAsync();
         }
     }
 }

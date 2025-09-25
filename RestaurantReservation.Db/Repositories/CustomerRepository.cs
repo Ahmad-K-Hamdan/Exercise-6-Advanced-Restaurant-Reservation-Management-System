@@ -44,14 +44,14 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public List<CustomerDetailsDTO> FindCustomersByPartySize(int minPartySize)
+        public async Task<List<CustomerDetailsDTO>> FindCustomersByPartySize(int minPartySize)
         {
             try
             {
-                var customers = _context.Database
+                var customers = await _context.Database
                     .SqlQuery<CustomerDetailsDTO>(
                         $"EXEC ListAllCusWithMinPartySize @MinPartySize = {minPartySize}"
-                    ).ToList();
+                    ).ToListAsync();
                 return customers;
             }
             catch (Exception)

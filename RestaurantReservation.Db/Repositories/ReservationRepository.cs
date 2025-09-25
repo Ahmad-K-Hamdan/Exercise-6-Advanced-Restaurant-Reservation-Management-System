@@ -48,17 +48,17 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Reservations.Where(res => res.CustomerId == CustomerId).ToList();
         }
 
-        public List<Order> ListOrdersAndMenuItems(int ReservationId)
+        public async Task<List<Order>> ListOrdersAndMenuItems(int ReservationId)
         {
-            return _context.Orders.Where(o => o.ReservationId == ReservationId)
+            return await _context.Orders.Where(o => o.ReservationId == ReservationId)
                     .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.MenuItem)
-                    .ToList();
+                    .ToListAsync();
         }
 
-        public List<OrderedMenuItemDTO> ListOrderedMenuItems(int reservationId)
+        public async Task<List<OrderedMenuItemDTO>> ListOrderedMenuItems(int reservationId)
         {
-            return _context.OrderItems.Where(oi => oi.Order.ReservationId == reservationId)
+            return await _context.OrderItems.Where(oi => oi.Order.ReservationId == reservationId)
                     .Include(oi => oi.MenuItem)
                     .Include(oi => oi.Order)
                     .Select(oi => new OrderedMenuItemDTO
@@ -66,12 +66,12 @@ namespace RestaurantReservation.Db.Repositories
                         MenuItemName = oi.MenuItem.Name,
                         Price = oi.MenuItem.Price,
                         Quantity = oi.Quantity,
-                    }).ToList();
+                    }).ToListAsync();
         }
 
-        public List<ReservationDetailsDTO> GetReservationDetails()
+        public async Task<List<ReservationDetailsDTO>> GetReservationDetails()
         {
-            return _context.ReservationDetailsView.ToList();
+            return await _context.ReservationDetailsView.ToListAsync();
         }
     }
 }
