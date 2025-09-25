@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -29,10 +30,11 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.Tables.FirstOrDefaultAsync(t => t.TableId == TableId);
         }
 
-        public void Update(Table table)
+        public async Task<Table> Update(Table table)
         {
             _context.Tables.Update(table);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return table;
         }
 
         public void Delete(Table table)

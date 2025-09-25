@@ -31,10 +31,11 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.Employees.FirstOrDefaultAsync(emp => emp.EmployeeId == EmployeeId);
         }
 
-        public void Update(Employee employee)
+        public async Task<Employee> Update(Employee employee)
         {
             _context.Employees.Update(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return employee;
         }
 
         public void Delete(Employee employee)

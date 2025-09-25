@@ -30,10 +30,11 @@ namespace RestaurantReservation.Db.Repositories
             return await _context.MenuItems.FirstOrDefaultAsync(mi => mi.ItemId == ItemId);
         }
 
-        public void Update(MenuItem menuItem)
+        public async Task<MenuItem> Update(MenuItem menuItem)
         {
             _context.MenuItems.Update(menuItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return menuItem;
         }
 
         public void Delete(MenuItem menuItem)
