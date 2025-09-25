@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Core.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -12,9 +13,9 @@ namespace RestaurantReservation.Db.Repositories
             _context = context;
         }
 
-        public List<Employee> GetAll()
+        public async Task<List<Employee>> GetAllAsync()
         {
-            return _context.Employees.ToList();
+            return await _context.Employees.ToListAsync();
         }
 
         public void Add(Employee employee)

@@ -2,7 +2,6 @@
 using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.DTOs;
 
-
 namespace RestaurantReservation.Db.Repositories
 {
     public class ReservationRepository
@@ -14,11 +13,10 @@ namespace RestaurantReservation.Db.Repositories
             _context = context;
         }
 
-        public List<Reservation> GetAll()
+        public async Task<List<Reservation>> GetAllAsync()
         {
-            return _context.Reservations.ToList();
+            return await _context.Reservations.ToListAsync();
         }
-
         public void Add(Reservation reservation)
         {
             _context.Reservations.Add(reservation);

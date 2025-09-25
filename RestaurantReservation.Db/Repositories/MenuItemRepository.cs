@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Db.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -11,9 +12,9 @@ namespace RestaurantReservation.Db.Repositories
             _context = context;
         }
 
-        public List<MenuItem> GetAll()
+        public async Task<List<MenuItem>> GetAllAsync()
         {
-            return _context.MenuItems.ToList();
+            return await _context.MenuItems.ToListAsync();
         }
 
         public void Add(MenuItem menuItem)

@@ -12,9 +12,9 @@ namespace RestaurantReservation.Db.Repositories
             _context = context;
         }
 
-        public List<Order> GetAll()
+        public async Task<List<Order>> GetAllAsync()
         {
-            return _context.Orders.ToList();
+            return await _context.Orders.ToListAsync();
         }
 
         public void Add(Order order)

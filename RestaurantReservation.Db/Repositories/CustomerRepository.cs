@@ -13,9 +13,9 @@ namespace RestaurantReservation.Db.Repositories
             _context = context;
         }
 
-        public List<Customer> GetAll()
+        public async Task<List<Customer>> GetAllAsync()
         {
-            return _context.Customers.ToList();
+            return await _context.Customers.ToListAsync();
         }
 
         public void Add(Customer customer)
