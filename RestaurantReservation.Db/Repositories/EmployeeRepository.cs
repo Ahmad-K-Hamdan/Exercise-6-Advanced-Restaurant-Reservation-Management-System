@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Core.DTOs;
+using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -44,9 +45,9 @@ namespace RestaurantReservation.Db.Repositories
             return _context.Employees.Where(emp => emp.Position == "Manager").ToList();
         }
 
-        public bool IsEmpty()
+        public List<EmployeeDetailsDTO> GetEmployeeDetails()
         {
-            return !_context.Employees.Any();
+            return _context.EmployeeDetailsView.ToList();
         }
     }
 }

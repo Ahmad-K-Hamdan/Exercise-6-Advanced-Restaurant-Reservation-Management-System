@@ -61,7 +61,6 @@ namespace RestaurantReservation.Services.MainServices
         public Order Update(int orderId, int employeeId)
         {
             var order = GetOrderById(orderId);
-
             order.EmployeeId = employeeId;
             _orderRepo.Update(order);
             return order;
@@ -69,6 +68,7 @@ namespace RestaurantReservation.Services.MainServices
 
         public decimal CalculateAverageOrderAmountByEmployee(int employeeId)
         {
+            var employee = GetEmployeeById(employeeId);
             return _orderRepo.CalculateAverageOrderAmountByEmployee(employeeId);
         }
 

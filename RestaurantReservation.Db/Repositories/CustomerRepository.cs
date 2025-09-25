@@ -1,4 +1,6 @@
-﻿using RestaurantReservation.Db.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Core.DTOs;
+using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -39,9 +41,20 @@ namespace RestaurantReservation.Db.Repositories
             _context.SaveChanges();
         }
 
-        public bool IsEmpty()
+        public List<CustomerDetailsDTO> FindCustomersByPartySize(int minPartySize)
         {
-            return !_context.Customers.Any();
+            try
+            {
+                var customers = _context.Database
+                    .SqlQuery<CustomerDetailsDTO>(
+                        $"EXEC ListAllCusWithMinPartySize @MinPartySize = {minPartySize}"
+                    ).ToList();
+                return customers;
+            }
+            catch (Exception)
+            {
+                return new List<CustomerDetailsDTO>();
+            }
         }
     }
 }

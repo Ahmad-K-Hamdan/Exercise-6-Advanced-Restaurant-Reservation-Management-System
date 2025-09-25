@@ -93,6 +93,12 @@ namespace RestaurantReservation.Services.MainServices
             return restaurant;
         }
 
+        public decimal CalculateRestaurantRevenue(int restaurantId)
+        {
+            var restaurant = GetRestaurantById(restaurantId);
+            return _restaurantRepo.GetRestaurantRevenue(restaurantId);
+        }
+
         private Restaurant GetRestaurantById(int restaurantId)
         {
             var restaurant = _restaurantRepo.GetById(restaurantId);

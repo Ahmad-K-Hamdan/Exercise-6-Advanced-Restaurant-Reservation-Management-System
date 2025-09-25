@@ -38,10 +38,5 @@ namespace RestaurantReservation.Db.Repositories
             _context.MenuItems.Remove(menuItem);
             _context.SaveChanges();
         }
-
-        public bool IsEmpty()
-        {
-            return !_context.MenuItems.Any();
-        }
     }
 }

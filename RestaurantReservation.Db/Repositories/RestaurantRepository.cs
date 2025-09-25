@@ -1,4 +1,5 @@
-﻿using RestaurantReservation.Db.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -39,9 +40,19 @@ namespace RestaurantReservation.Db.Repositories
             _context.SaveChanges();
         }
 
-        public bool IsEmpty()
+        public decimal GetRestaurantRevenue(int restaurantId)
         {
-            return !_context.Restaurants.Any();
+            try
+            {
+                var revenue = _context.Database
+                    .SqlQuery<decimal>($"SELECT dbo.CalcTotalRevenue({restaurantId}) AS Value")
+                    .FirstOrDefault();
+                return revenue;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

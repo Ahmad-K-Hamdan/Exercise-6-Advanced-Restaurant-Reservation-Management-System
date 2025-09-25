@@ -68,9 +68,9 @@ namespace RestaurantReservation.Db.Repositories
                     }).ToList();
         }
 
-        public bool IsEmpty()
+        public List<ReservationDetailsDTO> GetReservationDetails()
         {
-            return !_context.Reservations.Any();
+            return _context.ReservationDetailsView.ToList();
         }
     }
 }

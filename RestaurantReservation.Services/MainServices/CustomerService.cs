@@ -1,6 +1,7 @@
 ﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Core.DTOs;
 
 namespace RestaurantReservation.Services.MainServices
 {
@@ -91,6 +92,16 @@ namespace RestaurantReservation.Services.MainServices
 
             _customerRepo.Update(customer);
             return customer;
+        }
+
+        public List<CustomerDetailsDTO> FindCustomersByPartySize(int minPartySize)
+        {
+            var partySizeValidation = ReservationValidator.ValidatePartySize(minPartySize.ToString());
+            if (partySizeValidation != null)
+            {
+                throw new ArgumentException(partySizeValidation);
+            }
+            return _customerRepo.FindCustomersByPartySize(minPartySize);
         }
 
         private Customer GetCustomerById(int customerId)

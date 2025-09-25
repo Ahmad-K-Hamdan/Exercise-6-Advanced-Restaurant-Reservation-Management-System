@@ -88,17 +88,25 @@ namespace RestaurantReservation.Services.MainServices
 
         public List<Reservation> ListReservationsByCustomer(int customerId)
         {
+            var customer = GetCustomerById(customerId);
             return _reservationRepo.GetByCustomerId(customerId);
         }
 
         public List<Order> ListOrdersAndMenuItems(int reservationId)
         {
+            var reservation = GetReservationById(reservationId);
             return _reservationRepo.ListOrdersAndMenuItems(reservationId);
         }
 
         public List<OrderedMenuItemDTO> ListOrderedMenuItems(int reservationId)
         {
+            var reservation = GetReservationById(reservationId);
             return _reservationRepo.ListOrderedMenuItems(reservationId);
+        }
+
+        public List<ReservationDetailsDTO> GetReservationDetails()
+        {
+            return _reservationRepo.GetReservationDetails();
         }
 
         private Reservation GetReservationById(int reservationId)

@@ -1,6 +1,7 @@
 ﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
+using RestaurantReservation.Core.DTOs;
 
 namespace RestaurantReservation.Services.MainServices
 {
@@ -90,6 +91,11 @@ namespace RestaurantReservation.Services.MainServices
         public List<Employee> ListManagers()
         {
             return _employeeRepo.GetManagers();
+        }
+
+        public List<EmployeeDetailsDTO> GetEmployeeDetails()
+        {
+            return _employeeRepo.GetEmployeeDetails();
         }
 
         private Employee GetEmployeeById(int employeeId)

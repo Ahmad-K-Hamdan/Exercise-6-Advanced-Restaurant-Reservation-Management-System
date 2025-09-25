@@ -54,10 +54,5 @@ namespace RestaurantReservation.Db.Repositories
             }
             return orders.Average(o => o.TotalAmount);
         }
-
-        public bool IsEmpty()
-        {
-            return !_context.Orders.Any();
-        }
     }
 }
