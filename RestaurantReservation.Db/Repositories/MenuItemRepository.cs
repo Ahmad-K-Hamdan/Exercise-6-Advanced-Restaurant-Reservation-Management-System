@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -25,7 +24,7 @@ namespace RestaurantReservation.Db.Repositories
             return menuItem;
         }
 
-        public async Task<MenuItem?> GetById(int ItemId)
+        public async Task<MenuItem?> GetByIdAsync(int ItemId)
         {
             return await _context.MenuItems.FirstOrDefaultAsync(mi => mi.ItemId == ItemId);
         }

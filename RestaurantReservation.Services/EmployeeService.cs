@@ -16,14 +16,14 @@ namespace RestaurantReservation.Services
             _restaurantRepo = restaurantRepo;
         }
 
-        public List<Employee> ViewAll()
+        public async Task<List<Employee>> ViewAllAsync()
         {
-            return _employeeRepo.GetAll();
+            return await _employeeRepo.GetAllAsync();
         }
 
-        public Employee Add(int restaurantId, string firstName, string lastName, string position)
+        public async Task<Employee> AddAsync(int restaurantId, string firstName, string lastName, string position)
         {
-            var restaurant = GetRestaurantById(restaurantId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
 
             var empFirstName = EmployeeValidator.ValidateFirstName(firstName);
             if (empFirstName != null)
@@ -50,19 +50,18 @@ namespace RestaurantReservation.Services
                 Restaurant = restaurant
             };
 
-            _employeeRepo.Add(newEmployee);
-            return newEmployee;
+            return await _employeeRepo.AddAsync(newEmployee);
         }
 
-        public void Delete(int employeeId)
+        public async Task DeleteAsync(int employeeId)
         {
-            var employee = GetEmployeeById(employeeId);
-            _employeeRepo.Delete(employee);
+            var employee = await GetEmployeeByIdAsync(employeeId);
+            await _employeeRepo.DeleteAsync(employee);
         }
 
-        public Employee Update(int employeeId, string firstName, string lastName, string position)
+        public async Task<Employee> UpdateAsync(int employeeId, string firstName, string lastName, string position)
         {
-            var employee = GetEmployeeById(employeeId);
+            var employee = await GetEmployeeByIdAsync(employeeId);
 
             var empFirstName = EmployeeValidator.ValidateFirstName(firstName);
             if (empFirstName != null)
@@ -84,23 +83,22 @@ namespace RestaurantReservation.Services
             employee.LastName = lastName;
             employee.Position = position;
 
-            _employeeRepo.Update(employee);
-            return employee;
+            return await _employeeRepo.UpdateAsync(employee);
         }
 
-        public List<Employee> ListManagers()
+        public async Task<List<Employee>> ListManagersAsync()
         {
-            return _employeeRepo.GetManagers();
+            return await _employeeRepo.GetManagers();
         }
 
-        public List<EmployeeDetailsDTO> GetEmployeeDetails()
+        public async Task<List<EmployeeDetailsDTO>> GetEmployeeDetailsAsync()
         {
-            return _employeeRepo.GetEmployeeDetails();
+            return await _employeeRepo.GetEmployeeDetails();
         }
 
-        private Employee GetEmployeeById(int employeeId)
+        private async Task<Employee> GetEmployeeByIdAsync(int employeeId)
         {
-            var employee = _employeeRepo.GetById(employeeId);
+            var employee = await _employeeRepo.GetByIdAsync(employeeId);
             if (employee == null)
             {
                 throw new InvalidOperationException($"Employee with ID {employeeId} not found.");
@@ -108,9 +106,9 @@ namespace RestaurantReservation.Services
             return employee;
         }
 
-        private Restaurant GetRestaurantById(int restaurantId)
+        private async Task<Restaurant> GetRestaurantByIdAsync(int restaurantId)
         {
-            var restaurant = _restaurantRepo.GetById(restaurantId);
+            var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
             if (restaurant == null)
             {
                 throw new ArgumentException("Restaurant not found.");

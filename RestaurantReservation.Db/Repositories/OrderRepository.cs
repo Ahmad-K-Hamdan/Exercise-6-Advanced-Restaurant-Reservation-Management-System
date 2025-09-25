@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -25,7 +24,7 @@ namespace RestaurantReservation.Db.Repositories
             return order;
         }
 
-        public async Task<Order?> GetById(int OrderId)
+        public async Task<Order?> GetByIdAsync(int OrderId)
         {
             return await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == OrderId);
         }
@@ -43,12 +42,12 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Order>> GetOrdersByReservationId(int reservationId)
+        public async Task<List<Order>> GetOrdersByReservationIdAsync(int reservationId)
         {
             return await _context.Orders.Where(o => o.ReservationId == reservationId).Include(o => o.OrderItems).ToListAsync();
         }
 
-        public async Task<decimal> CalculateAverageOrderAmountByEmployee(int employeeId)
+        public async Task<decimal> CalculateAverageOrderAmountByEmployeeAsync(int employeeId)
         {
             var orders = await _context.Orders.Where(o => o.EmployeeId == employeeId).ToListAsync();
             if (orders.Count == 0)

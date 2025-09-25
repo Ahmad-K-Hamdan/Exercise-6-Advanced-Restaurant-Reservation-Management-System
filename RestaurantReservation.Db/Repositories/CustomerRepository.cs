@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Db.Models;
 
@@ -44,7 +43,7 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<CustomerDetailsDTO>> FindCustomersByPartySize(int minPartySize)
+        public async Task<List<CustomerDetailsDTO>> FindCustomersByPartySizeAsync(int minPartySize)
         {
             try
             {

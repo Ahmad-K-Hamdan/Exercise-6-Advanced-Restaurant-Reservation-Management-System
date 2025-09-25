@@ -20,16 +20,16 @@ namespace RestaurantReservation.Services
             _tableRepo = tableRepo;
         }
 
-        public List<Reservation> ViewAll()
+        public async Task<List<Reservation>> ViewAllAsync()
         {
-            return _reservationRepo.GetAll();
+            return await _reservationRepo.GetAllAsync();
         }
 
-        public Reservation Add(int customerId, int restaurantId, int tableId, DateTime reservationDate, int partySize)
+        public async Task<Reservation> AddAsync(int customerId, int restaurantId, int tableId, DateTime reservationDate, int partySize)
         {
-            var customer = GetCustomerById(customerId);
-            var restaurant = GetRestaurantById(restaurantId);
-            var table = GetTableById(tableId);
+            var customer = await GetCustomerByIdAsync(customerId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
+            var table = await GetTableByIdAsync(tableId);
 
             var reservationDateValidation = ReservationValidator.ValidateReservationDate(reservationDate.ToString("yyyy-MM-dd HH:mm"));
             if (reservationDateValidation != null)
@@ -54,19 +54,18 @@ namespace RestaurantReservation.Services
                 Table = table
             };
 
-            _reservationRepo.Add(newReservation);
-            return newReservation;
+            return await _reservationRepo.AddAsync(newReservation);
         }
 
-        public void Delete(int reservationId)
+        public async Task DeleteAsync(int reservationId)
         {
-            var reservation = GetReservationById(reservationId);
-            _reservationRepo.Delete(reservation);
+            var reservation = await GetReservationByIdAsync(reservationId);
+            await _reservationRepo.DeleteAsync(reservation);
         }
 
-        public Reservation Update(int reservationId, DateTime reservationDate, int partySize)
+        public async Task<Reservation> UpdateAsync(int reservationId, DateTime reservationDate, int partySize)
         {
-            var reservation = GetReservationById(reservationId);
+            var reservation = await GetReservationByIdAsync(reservationId);
 
             var reservationDateValidation = ReservationValidator.ValidateReservationDate(reservationDate.ToString("yyyy-MM-dd HH:mm"));
             if (reservationDateValidation != null)
@@ -82,36 +81,35 @@ namespace RestaurantReservation.Services
             reservation.ReservationDate = reservationDate;
             reservation.PartySize = partySize;
 
-            _reservationRepo.Update(reservation);
-            return reservation;
+            return await _reservationRepo.UpdateAsync(reservation);
         }
 
-        public List<Reservation> ListReservationsByCustomer(int customerId)
+        public async Task<List<Reservation>> ListReservationsByCustomerAsync(int customerId)
         {
-            var customer = GetCustomerById(customerId);
-            return _reservationRepo.GetByCustomerId(customerId);
+            var customer = await GetCustomerByIdAsync(customerId);
+            return await _reservationRepo.GetByCustomerIdAsync(customerId);
         }
 
-        public List<Order> ListOrdersAndMenuItems(int reservationId)
+        public async Task<List<Order>> ListOrdersAndMenuItemsAsync(int reservationId)
         {
-            var reservation = GetReservationById(reservationId);
-            return _reservationRepo.ListOrdersAndMenuItems(reservationId);
+            var reservation = await GetReservationByIdAsync(reservationId);
+            return await _reservationRepo.ListOrdersAndMenuItemsAsync(reservationId);
         }
 
-        public List<OrderedMenuItemDTO> ListOrderedMenuItems(int reservationId)
+        public async Task<List<OrderedMenuItemDTO>> ListOrderedMenuItemsAsync(int reservationId)
         {
-            var reservation = GetReservationById(reservationId);
-            return _reservationRepo.ListOrderedMenuItems(reservationId);
+            var reservation = await GetReservationByIdAsync(reservationId);
+            return await _reservationRepo.ListOrderedMenuItemsAsync(reservationId);
         }
 
-        public List<ReservationDetailsDTO> GetReservationDetails()
+        public async Task<List<ReservationDetailsDTO>> GetReservationDetailsAsync()
         {
-            return _reservationRepo.GetReservationDetails();
+            return await _reservationRepo.GetReservationDetailsAsync();
         }
 
-        private Reservation GetReservationById(int reservationId)
+        private async Task<Reservation> GetReservationByIdAsync(int reservationId)
         {
-            var reservation = _reservationRepo.GetById(reservationId);
+            var reservation = await _reservationRepo.GetByIdAsync(reservationId);
             if (reservation == null)
             {
                 throw new InvalidOperationException($"Reservation with ID {reservationId} not found.");
@@ -119,9 +117,9 @@ namespace RestaurantReservation.Services
             return reservation;
         }
 
-        private Customer GetCustomerById(int customerId)
+        private async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            var customer = _customerRepo.GetById(customerId);
+            var customer = await _customerRepo.GetByIdAsync(customerId);
             if (customer == null)
             {
                 throw new InvalidOperationException($"Customer with ID {customerId} not found.");
@@ -129,9 +127,9 @@ namespace RestaurantReservation.Services
             return customer;
         }
 
-        private Restaurant GetRestaurantById(int restaurantId)
+        private async Task<Restaurant> GetRestaurantByIdAsync(int restaurantId)
         {
-            var restaurant = _restaurantRepo.GetById(restaurantId);
+            var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
             if (restaurant == null)
             {
                 throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");
@@ -139,9 +137,9 @@ namespace RestaurantReservation.Services
             return restaurant;
         }
 
-        private Table GetTableById(int tableId)
+        private async Task<Table> GetTableByIdAsync(int tableId)
         {
-            var table = _tableRepo.GetById(tableId);
+            var table = await _tableRepo.GetByIdAsync(tableId);
             if (table == null)
             {
                 throw new InvalidOperationException($"Table with ID {tableId} not found.");

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.DTOs;
-using System.Threading.Tasks;
 
 namespace RestaurantReservation.Db.Repositories
 {
@@ -18,6 +17,7 @@ namespace RestaurantReservation.Db.Repositories
         {
             return await _context.Reservations.ToListAsync();
         }
+
         public async Task<Reservation> AddAsync(Reservation reservation)
         {
             _context.Reservations.Add(reservation);
@@ -43,12 +43,12 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public List<Reservation> GetByCustomerId(int CustomerId)
+        public async Task<List<Reservation>> GetByCustomerIdAsync(int CustomerId)
         {
-            return _context.Reservations.Where(res => res.CustomerId == CustomerId).ToList();
+            return await _context.Reservations.Where(res => res.CustomerId == CustomerId).ToListAsync();
         }
 
-        public async Task<List<Order>> ListOrdersAndMenuItems(int ReservationId)
+        public async Task<List<Order>> ListOrdersAndMenuItemsAsync(int ReservationId)
         {
             return await _context.Orders.Where(o => o.ReservationId == ReservationId)
                     .Include(o => o.OrderItems)
@@ -56,7 +56,7 @@ namespace RestaurantReservation.Db.Repositories
                     .ToListAsync();
         }
 
-        public async Task<List<OrderedMenuItemDTO>> ListOrderedMenuItems(int reservationId)
+        public async Task<List<OrderedMenuItemDTO>> ListOrderedMenuItemsAsync(int reservationId)
         {
             return await _context.OrderItems.Where(oi => oi.Order.ReservationId == reservationId)
                     .Include(oi => oi.MenuItem)
@@ -69,7 +69,7 @@ namespace RestaurantReservation.Db.Repositories
                     }).ToListAsync();
         }
 
-        public async Task<List<ReservationDetailsDTO>> GetReservationDetails()
+        public async Task<List<ReservationDetailsDTO>> GetReservationDetailsAsync()
         {
             return await _context.ReservationDetailsView.ToListAsync();
         }

@@ -17,15 +17,15 @@ namespace RestaurantReservation.Services
             _employeeRepo = employeeRepo;
         }
 
-        public List<Order> ViewAll()
+        public async Task<List<Order>> ViewAllAsync()
         {
-            return _orderRepo.GetAll();
+            return await _orderRepo.GetAllAsync();
         }
 
-        public Order Add(int reservationId, int employeeId, DateTime orderDate, decimal totalAmount)
+        public async Task<Order> AddAsync(int reservationId, int employeeId, DateTime orderDate, decimal totalAmount)
         {
-            var reservation = GetReservationById(reservationId);
-            var employee = GetEmployeeById(employeeId);
+            var reservation = await GetReservationByIdAsync(reservationId);
+            var employee = await GetEmployeeByIdAsync(employeeId);
 
             var orderDateValidation = OrderValidator.ValidateOrderDate(orderDate.ToString("yyyy-MM-dd HH:mm"));
             if (orderDateValidation != null)
@@ -48,33 +48,31 @@ namespace RestaurantReservation.Services
                 Employee = employee
             };
 
-            _orderRepo.Add(newOrder);
-            return newOrder;
+            return await _orderRepo.AddAsync(newOrder);
         }
 
-        public void Delete(int orderId)
+        public async Task DeleteAsync(int orderId)
         {
-            var order = GetOrderById(orderId);
-            _orderRepo.Delete(order);
+            var order = await GetOrderByIdAsync(orderId);
+            await _orderRepo.DeleteAsync(order);
         }
 
-        public Order Update(int orderId, int employeeId)
+        public async Task<Order> UpdateAsync(int orderId, int employeeId)
         {
-            var order = GetOrderById(orderId);
+            var order = await GetOrderByIdAsync(orderId);
             order.EmployeeId = employeeId;
-            _orderRepo.Update(order);
-            return order;
+            return await _orderRepo.UpdateAsync(order);
         }
 
-        public decimal CalculateAverageOrderAmountByEmployee(int employeeId)
+        public async Task<decimal> CalculateAverageOrderAmountByEmployeeAsync(int employeeId)
         {
-            var employee = GetEmployeeById(employeeId);
-            return _orderRepo.CalculateAverageOrderAmountByEmployee(employeeId);
+            var employee = await GetEmployeeByIdAsync(employeeId);
+            return await _orderRepo.CalculateAverageOrderAmountByEmployee(employeeId);
         }
 
-        private Order GetOrderById(int orderId)
+        private async Task<Order> GetOrderByIdAsync(int orderId)
         {
-            var order = _orderRepo.GetById(orderId);
+            var order = await _orderRepo.GetByIdAsync(orderId);
             if (order == null)
             {
                 throw new InvalidOperationException($"Order with ID {orderId} not found.");
@@ -82,9 +80,9 @@ namespace RestaurantReservation.Services
             return order;
         }
 
-        private Reservation GetReservationById(int reservationId)
+        private async Task<Reservation> GetReservationByIdAsync(int reservationId)
         {
-            var reservation = _reservationRepo.GetById(reservationId);
+            var reservation = await _reservationRepo.GetByIdAsync(reservationId);
             if (reservation == null)
             {
                 throw new InvalidOperationException($"Reservation with ID {reservationId} not found.");
@@ -92,9 +90,9 @@ namespace RestaurantReservation.Services
             return reservation;
         }
 
-        private Employee GetEmployeeById(int employeeId)
+        private async Task<Employee> GetEmployeeByIdAsync(int employeeId)
         {
-            var employee = _employeeRepo.GetById(employeeId);
+            var employee = await _employeeRepo.GetByIdAsync(employeeId);
             if (employee == null)
             {
                 throw new InvalidOperationException($"Employee with ID {employeeId} not found.");

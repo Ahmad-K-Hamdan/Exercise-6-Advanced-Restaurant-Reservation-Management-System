@@ -1,5 +1,4 @@
-﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Db.Models;
+﻿using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
 
@@ -18,15 +17,15 @@ namespace RestaurantReservation.Services
             _menuItemRepo = menuItemRepo;
         }
 
-        public List<OrderItem> ViewAll()
+        public async Task<List<OrderItem>> ViewAllAsync()
         {
-            return _orderItemRepo.GetAll();
+            return await _orderItemRepo.GetAllAsync();
         }
 
-        public OrderItem Add(int orderId, int menuItemId, int quantity)
+        public async Task<OrderItem> AddAsync(int orderId, int menuItemId, int quantity)
         {
-            var order = GetOrderById(orderId);
-            var menuItem = GetMenuItemById(menuItemId);
+            var order = await GetOrderByIdAsync(orderId);
+            var menuItem = await GetMenuItemByIdAsync(menuItemId);
 
             var quantityValidation = OrderItemValidator.ValidateQuantity(quantity.ToString());
             if (quantityValidation != null)
@@ -43,19 +42,18 @@ namespace RestaurantReservation.Services
                 MenuItem = menuItem
             };
 
-            _orderItemRepo.Add(newOrderItem);
-            return newOrderItem;
+            return await _orderItemRepo.AddAsync(newOrderItem);
         }
 
-        public void Delete(int orderItemId)
+        public async Task DeleteAsync(int orderItemId)
         {
-            var orderItem = GetOrderItemById(orderItemId);
-            _orderItemRepo.Delete(orderItem);
+            var orderItem = await GetOrderItemByIdAsync(orderItemId);
+            await _orderItemRepo.DeleteAsync(orderItem);
         }
 
-        public OrderItem Update(int orderItemId, int quantity)
+        public async Task<OrderItem> UpdateAsync(int orderItemId, int quantity)
         {
-            var orderItem = GetOrderItemById(orderItemId);
+            var orderItem = await GetOrderItemByIdAsync(orderItemId);
 
             var quantityValidation = OrderItemValidator.ValidateQuantity(quantity.ToString());
             if (quantityValidation != null)
@@ -64,13 +62,12 @@ namespace RestaurantReservation.Services
             }
 
             orderItem.Quantity = quantity;
-            _orderItemRepo.Update(orderItem);
-            return orderItem;
+            return await _orderItemRepo.UpdateAsync(orderItem);
         }
 
-        private OrderItem GetOrderItemById(int orderItemId)
+        private async Task<OrderItem> GetOrderItemByIdAsync(int orderItemId)
         {
-            var orderItem = _orderItemRepo.GetById(orderItemId);
+            var orderItem = await _orderItemRepo.GetByIdAsync(orderItemId);
             if (orderItem == null)
             {
                 throw new InvalidOperationException($"Order item with ID {orderItemId} not found.");
@@ -78,9 +75,9 @@ namespace RestaurantReservation.Services
             return orderItem;
         }
 
-        private Order GetOrderById(int orderId)
+        private async Task<Order> GetOrderByIdAsync(int orderId)
         {
-            var order = _orderRepo.GetById(orderId);
+            var order = await _orderRepo.GetByIdAsync(orderId);
             if (order == null)
             {
                 throw new InvalidOperationException($"Order with ID {orderId} not found.");
@@ -88,9 +85,9 @@ namespace RestaurantReservation.Services
             return order;
         }
 
-        private MenuItem GetMenuItemById(int menuItemId)
+        private async Task<MenuItem> GetMenuItemByIdAsync(int menuItemId)
         {
-            var menuItem = _menuItemRepo.GetById(menuItemId);
+            var menuItem = await _menuItemRepo.GetByIdAsync(menuItemId);
             if (menuItem == null)
             {
                 throw new InvalidOperationException($"Menu item with ID {menuItemId} not found.");

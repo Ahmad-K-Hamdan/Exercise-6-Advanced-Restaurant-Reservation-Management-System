@@ -15,14 +15,14 @@ namespace RestaurantReservation.Services
             _restaurantRepo = restaurantRepo;
         }
 
-        public List<Table> ViewAll()
+        public async Task<List<Table>> ViewAllAsync()
         {
-            return _tableRepo.GetAll();
+            return await _tableRepo.GetAllAsync();
         }
 
-        public Table Add(int restaurantId, int capacity)
+        public async Task<Table> AddAsync(int restaurantId, int capacity)
         {
-            var restaurant = GetRestaurantById(restaurantId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
 
             var tableCapacity = TableValidator.ValidateCapacity(capacity.ToString());
             if (tableCapacity != null)
@@ -37,19 +37,18 @@ namespace RestaurantReservation.Services
                 Restaurant = restaurant
             };
 
-            _tableRepo.Add(newTable);
-            return newTable;
+            return await _tableRepo.AddAsync(newTable);
         }
 
-        public void Delete(int tableId)
+        public async Task DeleteAsync(int tableId)
         {
-            var table = GetTableById(tableId);
-            _tableRepo.Delete(table);
+            var table = await GetTableByIdAsync(tableId);
+            await _tableRepo.DeleteAsync(table);
         }
 
-        public Table Update(int tableId, int restaurantId, int capacity)
+        public async Task<Table> UpdateAsync(int tableId, int restaurantId, int capacity)
         {
-            var table = GetTableById(tableId);
+            var table = await GetTableByIdAsync(tableId);
 
             var tableCapacity = TableValidator.ValidateCapacity(capacity.ToString());
             if (tableCapacity != null)
@@ -60,13 +59,12 @@ namespace RestaurantReservation.Services
             table.RestaurantId = restaurantId;
             table.Capacity = capacity;
 
-            _tableRepo.Update(table);
-            return table;
+            return await _tableRepo.UpdateAsync(table);
         }
 
-        private Table GetTableById(int tableId)
+        private async Task<Table> GetTableByIdAsync(int tableId)
         {
-            var table = _tableRepo.GetById(tableId);
+            var table = await _tableRepo.GetByIdAsync(tableId);
             if (table == null)
             {
                 throw new InvalidOperationException($"Table with ID {tableId} not found.");
@@ -74,9 +72,9 @@ namespace RestaurantReservation.Services
             return table;
         }
 
-        private Restaurant GetRestaurantById(int restaurantId)
+        private async Task<Restaurant> GetRestaurantByIdAsync(int restaurantId)
         {
-            var restaurant = _restaurantRepo.GetById(restaurantId);
+            var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
             if (restaurant == null)
             {
                 throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");

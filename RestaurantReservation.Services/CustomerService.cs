@@ -14,12 +14,12 @@ namespace RestaurantReservation.Services
             _customerRepo = customerRepo;
         }
 
-        public List<Customer> ViewAll()
+        public async Task<List<Customer>> ViewAllAsync()
         {
-            return _customerRepo.GetAll();
+            return await _customerRepo.GetAllAsync();
         }
 
-        public Customer Add(string firstName, string lastName, string email, string phoneNumber)
+        public async Task<Customer> AddAsync(string firstName, string lastName, string email, string phoneNumber)
         {
             var cusFirstName = CustomerValidator.ValidateFirstName(firstName);
             if (cusFirstName != null)
@@ -50,19 +50,18 @@ namespace RestaurantReservation.Services
                 PhoneNumber = cusPhoneNumber!
             };
 
-            _customerRepo.Add(newCustomer);
-            return newCustomer;
+            return await _customerRepo.AddAsync(newCustomer);
         }
 
-        public void Delete(int customerId)
+        public async Task DeleteAsync(int customerId)
         {
-            var customer = GetCustomerById(customerId);
-            _customerRepo.Delete(customer);
+            var customer = await GetCustomerByIdAsync(customerId);
+            await _customerRepo.DeleteAsync(customer);
         }
 
-        public Customer Update(int customerId, string firstName, string lastName, string email, string phoneNumber)
+        public async Task<Customer> UpdateAsync(int customerId, string firstName, string lastName, string email, string phoneNumber)
         {
-            var customer = GetCustomerById(customerId);
+            var customer = await GetCustomerByIdAsync(customerId);
 
             var cusFirstName = CustomerValidator.ValidateFirstName(firstName);
             if (cusFirstName != null)
@@ -90,23 +89,22 @@ namespace RestaurantReservation.Services
             customer.Email = cusEmail!;
             customer.PhoneNumber = cusPhoneNumber!;
 
-            _customerRepo.Update(customer);
-            return customer;
+            return await _customerRepo.UpdateAsync(customer);
         }
 
-        public List<CustomerDetailsDTO> FindCustomersByPartySize(int minPartySize)
+        public async Task<List<CustomerDetailsDTO>> FindCustomersByPartySizeAsync(int minPartySize)
         {
             var partySizeValidation = ReservationValidator.ValidatePartySize(minPartySize.ToString());
             if (partySizeValidation != null)
             {
                 throw new ArgumentException(partySizeValidation);
             }
-            return _customerRepo.FindCustomersByPartySize(minPartySize);
+            return await _customerRepo.FindCustomersByPartySize(minPartySize);
         }
 
-        private Customer GetCustomerById(int customerId)
+        private async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            var customer = _customerRepo.GetById(customerId);
+            var customer = await _customerRepo.GetByIdAsync(customerId);
             if (customer == null)
             {
                 throw new InvalidOperationException($"Customer with ID {customerId} not found.");

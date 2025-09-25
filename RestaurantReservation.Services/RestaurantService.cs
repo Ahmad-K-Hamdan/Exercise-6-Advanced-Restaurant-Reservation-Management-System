@@ -13,12 +13,12 @@ namespace RestaurantReservation.Services
             _restaurantRepo = restaurantRepo;
         }
 
-        public List<Restaurant> ViewAll()
+        public async Task<List<Restaurant>> ViewAllAsync()
         {
-            return _restaurantRepo.GetAll();
+            return await _restaurantRepo.GetAllAsync();
         }
 
-        public Restaurant Add(string name, string address, string phoneNumber, string openingHours)
+        public async Task<Restaurant> AddAsync(string name, string address, string phoneNumber, string openingHours)
         {
             var restName = RestaurantValidator.ValidateRestaurantName(name);
             if (restName != null)
@@ -49,19 +49,18 @@ namespace RestaurantReservation.Services
                 OpeningHours = TimeSpan.Parse(openingHours)
             };
 
-            _restaurantRepo.Add(newRestaurant);
-            return newRestaurant;
+            return await _restaurantRepo.AddAsync(newRestaurant);
         }
 
-        public void Delete(int restaurantId)
+        public async Task DeleteAsync(int restaurantId)
         {
-            var restaurant = GetRestaurantById(restaurantId);
-            _restaurantRepo.Delete(restaurant);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
+            await _restaurantRepo.DeleteAsync(restaurant);
         }
 
-        public Restaurant Update(int restaurantId, string name, string address, string phoneNumber, string openingHours)
+        public async Task<Restaurant> UpdateAsync(int restaurantId, string name, string address, string phoneNumber, string openingHours)
         {
-            var restaurant = GetRestaurantById(restaurantId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
 
             var restName = RestaurantValidator.ValidateRestaurantName(name);
             if (restName != null)
@@ -89,19 +88,18 @@ namespace RestaurantReservation.Services
             restaurant.PhoneNumber = phoneNumber;
             restaurant.OpeningHours = TimeSpan.Parse(openingHours);
 
-            _restaurantRepo.Update(restaurant);
-            return restaurant;
+            return await _restaurantRepo.UpdateAsync(restaurant);
         }
 
-        public decimal CalculateRestaurantRevenue(int restaurantId)
+        public async Task<decimal> CalculateRestaurantRevenueAsync(int restaurantId)
         {
-            var restaurant = GetRestaurantById(restaurantId);
-            return _restaurantRepo.GetRestaurantRevenue(restaurantId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
+            return await _restaurantRepo.GetRestaurantRevenueAsync(restaurantId);
         }
 
-        private Restaurant GetRestaurantById(int restaurantId)
+        private async Task<Restaurant> GetRestaurantByIdAsync(int restaurantId)
         {
-            var restaurant = _restaurantRepo.GetById(restaurantId);
+            var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
             if (restaurant == null)
             {
                 throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");

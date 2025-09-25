@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Db.Models;
 
@@ -26,7 +25,7 @@ namespace RestaurantReservation.Db.Repositories
             return employee;
         }
 
-        public async Task<Employee?> GetById(int EmployeeId)
+        public async Task<Employee?> GetByIdAsync(int EmployeeId)
         {
             return await _context.Employees.FirstOrDefaultAsync(emp => emp.EmployeeId == EmployeeId);
         }
@@ -44,12 +43,12 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Employee>> GetManagers()
+        public async Task<List<Employee>> GetManagersAsync()
         {
             return await _context.Employees.Where(emp => emp.Position == "Manager").ToListAsync();
         }
 
-        public async Task<List<EmployeeDetailsDTO>> GetEmployeeDetails()
+        public async Task<List<EmployeeDetailsDTO>> GetEmployeeDetailsAsync()
         {
             return await _context.EmployeeDetailsView.ToListAsync();
         }

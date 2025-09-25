@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -44,7 +42,7 @@ namespace RestaurantReservation.Db.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<decimal> GetRestaurantRevenue(int restaurantId)
+        public async Task<decimal> GetRestaurantRevenueAsync(int restaurantId)
         {
             try
             {

@@ -15,14 +15,14 @@ namespace RestaurantReservation.Services
             _restaurantRepo = restaurantRepo;
         }
 
-        public List<MenuItem> ViewAll()
+        public async Task<List<MenuItem>> ViewAllAsync()
         {
-            return _menuItemRepo.GetAll();
+            return await _menuItemRepo.GetAllAsync();
         }
 
-        public MenuItem Add(int restaurantId, string name, string description, decimal price)
+        public async Task<MenuItem> AddAsync(int restaurantId, string name, string description, decimal price)
         {
-            var restaurant = GetRestaurantById(restaurantId);
+            var restaurant = await GetRestaurantByIdAsync(restaurantId);
 
             var menuItemName = MenuItemValidator.ValidateMenuItemName(name);
             if (menuItemName != null)
@@ -49,19 +49,18 @@ namespace RestaurantReservation.Services
                 Restaurant = restaurant
             };
 
-            _menuItemRepo.Add(newMenuItem);
-            return newMenuItem;
+            return await _menuItemRepo.AddAsync(newMenuItem);
         }
 
-        public void Delete(int menuItemId)
+        public async Task DeleteAsync(int menuItemId)
         {
-            var menuItem = GetMenuItemById(menuItemId);
-            _menuItemRepo.Delete(menuItem);
+            var menuItem = await GetMenuItemByIdAsync(menuItemId);
+            await _menuItemRepo.DeleteAsync(menuItem);
         }
 
-        public MenuItem Update(int menuItemId, string name, string description, decimal price)
+        public async Task<MenuItem> UpdateAsync(int menuItemId, string name, string description, decimal price)
         {
-            var menuItem = GetMenuItemById(menuItemId);
+            var menuItem = await GetMenuItemByIdAsync(menuItemId);
 
             var menuItemName = MenuItemValidator.ValidateMenuItemName(name);
             if (menuItemName != null)
@@ -83,13 +82,12 @@ namespace RestaurantReservation.Services
             menuItem.Description = description;
             menuItem.Price = price;
 
-            _menuItemRepo.Update(menuItem);
-            return menuItem;
+            return await _menuItemRepo.UpdateAsync(menuItem);
         }
 
-        private MenuItem GetMenuItemById(int menuItemId)
+        private async Task<MenuItem> GetMenuItemByIdAsync(int menuItemId)
         {
-            var menuItem = _menuItemRepo.GetById(menuItemId);
+            var menuItem = await _menuItemRepo.GetByIdAsync(menuItemId);
             if (menuItem == null)
             {
                 throw new InvalidOperationException($"Menu item with ID {menuItemId} not found.");
@@ -97,9 +95,9 @@ namespace RestaurantReservation.Services
             return menuItem;
         }
 
-        private Restaurant GetRestaurantById(int restaurantId)
+        private async Task<Restaurant> GetRestaurantByIdAsync(int restaurantId)
         {
-            var restaurant = _restaurantRepo.GetById(restaurantId);
+            var restaurant = await _restaurantRepo.GetByIdAsync(restaurantId);
             if (restaurant == null)
             {
                 throw new InvalidOperationException($"Restaurant with ID {restaurantId} not found.");
