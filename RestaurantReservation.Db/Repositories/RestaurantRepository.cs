@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -24,9 +25,9 @@ namespace RestaurantReservation.Db.Repositories
             return restaurant;
         }
 
-        public Restaurant? GetById(int RestaurantId)
+        public async Task<Restaurant?> GetByIdAsync(int RestaurantId)
         {
-            return _context.Restaurants.FirstOrDefault(rest => rest.RestaurantId == RestaurantId);
+            return await _context.Restaurants.FirstOrDefaultAsync(rest => rest.RestaurantId == RestaurantId);
         }
 
         public void Update(Restaurant restaurant)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Core.DTOs;
 using RestaurantReservation.Db.Models;
 
@@ -25,9 +26,9 @@ namespace RestaurantReservation.Db.Repositories
             return employee;
         }
 
-        public Employee? GetById(int EmployeeId)
+        public async Task<Employee?> GetById(int EmployeeId)
         {
-            return _context.Employees.FirstOrDefault(emp => emp.EmployeeId == EmployeeId);
+            return await _context.Employees.FirstOrDefaultAsync(emp => emp.EmployeeId == EmployeeId);
         }
 
         public void Update(Employee employee)

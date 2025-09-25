@@ -24,9 +24,9 @@ namespace RestaurantReservation.Db.Repositories
             return orderItem;
         }
 
-        public OrderItem? GetById(int orderItemId)
+        public async Task<OrderItem?> GetByIdAsync(int orderItemId)
         {
-            return _context.OrderItems.FirstOrDefault(oi => oi.OrderItemId == orderItemId);
+            return await _context.OrderItems.FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId);
         }
 
         public void Update(OrderItem orderItem)

@@ -24,9 +24,9 @@ namespace RestaurantReservation.Db.Repositories
             return reservation;
         }
 
-        public Reservation? GetById(int ReservationId)
+        public async Task<Reservation?> GetByIdAsync(int ReservationId)
         {
-            return _context.Reservations.FirstOrDefault(r => r.ReservationId == ReservationId);
+            return await _context.Reservations.FirstOrDefaultAsync(r => r.ReservationId == ReservationId);
         }
 
         public void Update(Reservation reservation)

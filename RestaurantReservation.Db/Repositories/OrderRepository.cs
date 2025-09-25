@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Db.Models;
 
 namespace RestaurantReservation.Db.Repositories
@@ -24,9 +25,9 @@ namespace RestaurantReservation.Db.Repositories
             return order;
         }
 
-        public Order? GetById(int OrderId)
+        public async Task<Order?> GetById(int OrderId)
         {
-            return _context.Orders.FirstOrDefault(o => o.OrderId == OrderId);
+            return await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == OrderId);
         }
 
         public void Update(Order order)
