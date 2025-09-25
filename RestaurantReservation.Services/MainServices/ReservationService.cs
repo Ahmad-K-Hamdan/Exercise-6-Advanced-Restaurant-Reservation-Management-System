@@ -1,8 +1,7 @@
 ﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Core.Models;
+using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
-using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services.MainServices
 {

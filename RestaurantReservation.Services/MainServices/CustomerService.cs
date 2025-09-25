@@ -1,8 +1,7 @@
 ﻿using RestaurantReservation.Core.Constants;
-using RestaurantReservation.Core.Models;
+using RestaurantReservation.Db.Models;
 using RestaurantReservation.Core.Validation;
 using RestaurantReservation.Db.Repositories;
-using RestaurantReservation.Services.Helpers;
 
 namespace RestaurantReservation.Services.MainServices
 {
@@ -15,111 +14,94 @@ namespace RestaurantReservation.Services.MainServices
             _customerRepo = customerRepo;
         }
 
-        public void ViewAll()
+        public List<Customer> ViewAll()
         {
-            if (IsEmpty())
-            {
-                Console.WriteLine("\nNo customers found.");
-                return;
-            }
-
-            var customers = _customerRepo.GetAll();
-            Console.WriteLine("\nAll Customers:");
-            foreach (var cust in customers)
-            {
-                Console.WriteLine(cust.ToString());
-            }
+            return _customerRepo.GetAll();
         }
 
-        public void Add()
+        public Customer Add(string firstName, string lastName, string email, string phoneNumber)
         {
-            Console.WriteLine();
-            try
+            var cusFirstName = CustomerValidator.ValidateFirstName(firstName);
+            if (cusFirstName != null)
             {
-                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
-                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
-                var email = InputHelper.GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
-                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
-
-                var newCustomer = new Customer
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Email = email,
-                    PhoneNumber = phoneNumber
-                };
-
-                _customerRepo.Add(newCustomer);
-                Console.WriteLine($"Customer '{firstName} {lastName}' added successfully!");
+                throw new ArgumentException(cusFirstName);
             }
-            catch (Exception ex)
+            var cusLastName = CustomerValidator.ValidateLastName(lastName);
+            if (cusLastName != null)
             {
-                Console.WriteLine($"Error adding customer: {ex.Message}");
+                throw new ArgumentException(cusLastName);
             }
+            var cusEmail = CustomerValidator.ValidateEmail(email);
+            if (cusEmail != null)
+            {
+                throw new ArgumentException(cusEmail);
+            }
+            var cusPhoneNumber = CustomerValidator.ValidatePhoneNumber(phoneNumber);
+            if (cusPhoneNumber != null)
+            {
+                throw new ArgumentException(cusPhoneNumber);
+            }
+
+            var newCustomer = new Customer
+            {
+                FirstName = cusFirstName!,
+                LastName = cusLastName!,
+                Email = cusEmail!,
+                PhoneNumber = cusPhoneNumber!
+            };
+
+            _customerRepo.Add(newCustomer);
+            return newCustomer;
         }
 
-        public void Delete()
+        public void Delete(int customerId)
         {
-            Console.WriteLine();
-            try
-            {
-                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
-                var customer = _customerRepo.GetById(customerId);
-
-                if (customer == null)
-                {
-                    Console.WriteLine($"Customer not found.");
-                }
-                else
-                {
-                    _customerRepo.Delete(customer);
-                    Console.WriteLine($"Customer with ID {customerId} deleted successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting customer: {ex.Message}");
-            }
+            var customer = GetCustomerById(customerId);
+            _customerRepo.Delete(customer);
         }
 
-        public void Update()
+        public Customer Update(int customerId, string firstName, string lastName, string email, string phoneNumber)
         {
-            Console.WriteLine();
-            try
+            var customer = GetCustomerById(customerId);
+
+            var cusFirstName = CustomerValidator.ValidateFirstName(firstName);
+            if (cusFirstName != null)
             {
-                var customerId = InputHelper.GetValidCustomerId(_customerRepo);
-                var customer = _customerRepo.GetById(customerId);
-
-                if (customer == null)
-                {
-                    Console.WriteLine($"Customer not found.");
-                    return;
-                }
-
-                Console.WriteLine($"Managing Customer: {customer}");
-
-                var firstName = InputHelper.GetValidInput(ValidationMessages.EnterFirstName, CustomerValidator.ValidateFirstName);
-                var lastName = InputHelper.GetValidInput(ValidationMessages.EnterLastName, CustomerValidator.ValidateLastName);
-                var email = InputHelper.GetValidInput(ValidationMessages.EnterEmail, CustomerValidator.ValidateEmail);
-                var phoneNumber = InputHelper.GetValidInput(ValidationMessages.EnterPhone, CustomerValidator.ValidatePhoneNumber);
-
-                customer.FirstName = firstName;
-                customer.LastName = lastName;
-                customer.Email = email;
-                customer.PhoneNumber = phoneNumber;
-
-                _customerRepo.Update(customer);
-                Console.WriteLine($"Customer with ID {customerId} updated successfully.");
+                throw new ArgumentException(cusFirstName);
             }
-            catch (Exception ex)
+            var cusLastName = CustomerValidator.ValidateLastName(lastName);
+            if (cusLastName != null)
             {
-                Console.WriteLine($"Error managing customer: {ex.Message}");
+                throw new ArgumentException(cusLastName);
             }
+            var cusEmail = CustomerValidator.ValidateEmail(email);
+            if (cusEmail != null)
+            {
+                throw new ArgumentException(cusEmail);
+            }
+            var cusPhoneNumber = CustomerValidator.ValidatePhoneNumber(phoneNumber);
+            if (cusPhoneNumber != null)
+            {
+                throw new ArgumentException(cusPhoneNumber);
+            }
+
+            customer.FirstName = cusFirstName!;
+            customer.LastName = cusLastName!;
+            customer.Email = cusEmail!;
+            customer.PhoneNumber = cusPhoneNumber!;
+
+            _customerRepo.Update(customer);
+            return customer;
         }
 
-        private bool IsEmpty()
+        public Customer GetCustomerById(int customerId)
         {
-            return _customerRepo.IsEmpty();
+            var customer = _customerRepo.GetById(customerId);
+            if (customer == null)
+            {
+                throw new InvalidOperationException($"Customer with ID {customerId} not found.");
+            }
+            return customer;
         }
     }
 }
